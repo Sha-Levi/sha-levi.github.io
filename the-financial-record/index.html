@@ -1,0 +1,1154 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Financial Record</title>
+<style>
+:root{
+  color-scheme:dark;
+  --ground:#1a1c2c; --panel:#212437; --panel2:#282c42; --rule:#33374f; --rule2:#434862;
+  --ink:#f1f2f6; --ink2:#bcc0d0; --mute:#8b90a6;
+  --gold:#dcb33f; --gold-dim:#9a7d2c; --gold-bg:rgba(220,179,63,.09);
+  --serif:Charter,"Bitstream Charter","Sitka Text",Cambria,Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ground);color:var(--ink);font:16.5px/1.62 var(--sans);-webkit-text-size-adjust:100%}
+.wrap{max-width:980px;margin:0 auto;padding:0 16px 72px}
+a{color:var(--gold)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;color:var(--gold);margin:0;text-wrap:balance;line-height:1.15}
+h2{font-size:clamp(1.6rem,4.2vw,2.2rem)}
+h3{font-size:1.28rem}
+p{margin:0}
+p+p{margin-top:.8em}
+.num{font-variant-numeric:tabular-nums}
+.eyebrow{font:600 .78rem/1.2 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.src{margin-top:12px;font-size:.8rem;color:var(--mute);border-top:1px solid var(--rule);padding-top:8px}
+.src b{color:var(--ink2);font-weight:600}
+
+/* masthead */
+header.mast{padding:56px 0 34px;border-bottom:2px solid var(--gold);display:grid;gap:14px;text-align:center}
+header.mast h1{font-size:clamp(2.1rem,7.5vw,4rem);letter-spacing:.04em}
+header.mast .sub{font:italic 400 clamp(1.1rem,3vw,1.45rem)/1.35 var(--serif);color:var(--ink)}
+header.mast .when{color:var(--ink2);font-size:.98rem}
+header.mast .basis{color:var(--mute);font-size:.86rem;max-width:62ch;margin:4px auto 0}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px;text-align:left}
+.fig{background:var(--panel);padding:14px 14px 12px;display:grid;gap:4px;align-content:start}
+.fig b{font:700 1.75rem/1.05 var(--serif);color:var(--gold);font-variant-numeric:tabular-nums}
+.fig span{font-size:.84rem;color:var(--ink2);line-height:1.35}
+
+nav.toc{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:22px 0 0;font-size:.86rem}
+nav.toc a{color:var(--ink2);text-decoration:none;border:1px solid var(--rule2);border-radius:999px;padding:4px 12px}
+nav.toc a:hover{color:var(--gold);border-color:var(--gold-dim)}
+
+section.part{padding-top:60px;display:grid;gap:22px;scroll-margin-top:12px}
+.part-head{display:grid;gap:8px;max-width:70ch}
+.part-head p{color:var(--ink2)}
+
+/* screenshots */
+figure.shot{margin:0 auto;max-width:800px;width:100%;display:grid;gap:8px}
+figure.shot img{display:block;width:100%;height:auto;border:1px solid var(--rule2);border-radius:6px}
+figure.shot figcaption{font-size:.82rem;color:var(--mute);line-height:1.45}
+figure.shot figcaption b{color:var(--ink2);font-weight:600}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+
+/* their violations */
+.theirs{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.theirs div{border:2px solid var(--gold-dim);border-radius:12px;padding:14px 16px;background:var(--panel)}
+.theirs small{color:var(--gold);font-size:.82rem}
+.theirs h3{color:var(--ink);font-size:1.08rem;margin:4px 0 6px;font-family:var(--sans)}
+.theirs p{color:var(--ink2);font-size:.94rem}
+blockquote{margin:0;border-left:3px solid var(--gold);padding:10px 16px;background:var(--gold-bg);font:italic 1.08rem/1.5 var(--serif);color:var(--ink)}
+blockquote cite{display:block;font:normal .8rem var(--sans);color:var(--mute);margin-top:6px}
+
+/* finding cards */
+.cards{display:grid;gap:22px}
+article.card{background:var(--panel);border:1px solid var(--rule);border-radius:8px;padding:22px 22px 18px;display:grid;gap:12px;scroll-margin-top:12px}
+article.card header{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:baseline}
+article.card .no{font:700 2.2rem/1 var(--serif);color:var(--gold-dim);font-variant-numeric:tabular-nums;grid-row:span 2}
+article.card .kicker{font-size:.82rem;color:var(--mute)}
+article.card p{max-width:72ch}
+article.card .lead{font-size:1.05rem;color:var(--ink)}
+ul.facts{margin:0;padding-left:20px;display:grid;gap:6px;max-width:72ch}
+ul.facts li::marker{color:var(--gold)}
+.callout{border:1px solid var(--rule2);background:var(--panel2);border-radius:6px;padding:12px 14px;font-size:.95rem;color:var(--ink2)}
+.callout b{color:var(--ink)}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
+th{font:600 .74rem/1.25 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--ink2);text-align:left;padding:10px 12px;background:var(--panel2);border-bottom:1px solid var(--rule2)}
+td{padding:9px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.tot td{background:var(--panel2);font-weight:700}
+tr.sub td{color:var(--ink2);font-size:.86rem}
+td.nm{font-weight:600;white-space:nowrap}
+.people td:first-child{white-space:nowrap;color:var(--ink2)}
+
+/* FOIA */
+.foia-note{display:grid;gap:6px;max-width:70ch}
+details.foia{background:var(--panel);border:1px solid var(--rule);border-radius:8px}
+details.foia+details.foia{margin-top:12px}
+details.foia summary{cursor:pointer;list-style:none;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center}
+details.foia summary::-webkit-details-marker{display:none}
+details.foia summary .t{font:700 1.1rem var(--serif);color:var(--gold)}
+details.foia summary .to{font-size:.86rem;color:var(--ink2);grid-column:1}
+details.foia summary .chev{grid-row:1/3;grid-column:2;color:var(--gold);font-size:1.3rem;transition:transform .15s}
+details.foia[open] summary .chev{transform:rotate(90deg)}
+.foia-body{padding:0 18px 18px;display:grid;gap:10px}
+.addr{font-size:.92rem;color:var(--ink2)}
+.addr b{color:var(--ink)}
+pre.letter{margin:0;white-space:pre-wrap;word-wrap:break-word;background:#15172a;border:1px solid var(--rule2);border-radius:6px;padding:14px 16px;font:.86rem/1.55 var(--mono);color:var(--ink);max-height:none}
+button.copy{justify-self:start;font:600 .86rem var(--sans);color:var(--ground);background:var(--gold);border:0;border-radius:6px;padding:8px 14px;cursor:pointer}
+button.copy:hover{filter:brightness(1.08)}
+
+/* questions */
+.questions{text-align:center;display:grid;gap:26px;max-width:720px;margin:0 auto}
+.questions .asks{font:italic 1.12rem/1.5 var(--serif);color:var(--ink2)}
+.questions ol{list-style:none;margin:0;padding:0;display:grid;gap:22px}
+.questions li{font:400 clamp(1.12rem,2.8vw,1.35rem)/1.45 var(--serif);color:var(--ink)}
+.questions .close{color:var(--ink2);font-size:.98rem}
+
+/* footer */
+footer{margin-top:72px;border-top:1px solid var(--rule2);padding-top:22px;display:grid;gap:22px;font-size:.86rem;color:var(--mute)}
+footer details summary{cursor:pointer;color:var(--ink2);font-weight:600}
+footer .srcs{margin-top:10px}
+footer .srcs td{font-size:.84rem}
+.sig{text-align:center;display:grid;gap:4px;padding:18px 0 8px;font-family:var(--serif)}
+.sig .a{letter-spacing:.14em;color:var(--gold);font-weight:700}
+.sig span{color:var(--ink2)}
+
+@media (max-width:560px){
+  body{font-size:16px}
+  header.mast{padding-top:36px}
+  article.card{padding:18px 16px 14px}
+  article.card header{grid-template-columns:1fr}
+  article.card .no{grid-row:auto;font-size:1.6rem}
+  th,td{padding:8px 9px}
+  .fig b{font-size:1.5rem}
+}
+
+/* narrow screens: tables become stacked label/value rows */
+.tbl{scrollbar-color:var(--rule2) var(--panel)}
+@media (max-width:600px){
+  table.stack thead{display:none}
+  table.stack tr{display:block;padding:10px 12px;border-bottom:1px solid var(--rule)}
+  table.stack tr:last-child{border-bottom:0}
+  table.stack tr.tot{background:var(--panel2)}
+  table.stack td{display:flex;justify-content:space-between;gap:14px;padding:2px 0;border:0;background:none;text-align:right}
+  table.stack td::before{content:attr(data-label);color:var(--mute);font-size:.82rem;font-weight:400;text-align:left}
+  table.stack td:first-child{display:block;text-align:left;padding-bottom:4px;font-weight:600;color:var(--ink)}
+  table.stack td:first-child::before{content:none}
+  table.stack td:empty{display:none}
+  table.stack.people td{display:block;text-align:left}
+  table.stack.people td::before{display:block}
+}
+@media print{
+  body{background:#fff;color:#000}
+  details.foia{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+:root{--crit:#e0695f;--ok:#7fb48a;--warn:#d9a24a;--claim:#9db4d6;--community:#c3a6e0}
+.wrap{max-width:1120px}
+.crossnav{position:sticky;top:0;z-index:30;display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:8px 16px;background:var(--ground);border-bottom:1px solid var(--rule2);font-size:.86rem}
+.crossnav a{color:var(--ink2);text-decoration:none;border:1px solid var(--rule2);border-radius:999px;padding:4px 12px}
+.crossnav a[aria-current="page"]{color:var(--ground);background:var(--gold);border-color:var(--gold);font-weight:600}
+header.mast .lede{color:var(--ink2);font-size:1rem;max-width:70ch;margin:0 auto}
+header.mast .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 22px;font-size:.86rem;color:var(--ink2)}
+.fig b.c{color:var(--crit)} .fig b.s{color:var(--gold)}
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);font-size:.84rem;text-align:left}
+.legend>div{background:var(--panel);padding:10px 12px;display:grid;gap:5px;align-content:start}
+.legend b{font:600 .74rem var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--ink2)}
+.legend span{color:var(--ink2)}
+.key-src{display:inline-block;width:10px;height:10px;border:1px solid;border-radius:50%;margin:0 4px 0 10px;vertical-align:0}
+main{display:grid;gap:0;min-width:0}
+.part-head .lede{color:var(--ink2);max-width:70ch}
+.pair{gap:12px}
+article.card header.ph{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+article.card header.ph h3{margin:0 auto 0 0}
+.st,.evd{font:600 .7rem var(--sans);letter-spacing:.08em;padding:2px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.st-confirms{color:var(--ok);border-color:var(--ok)} .st-context{color:var(--gold);border-color:var(--gold-dim)}
+.st-norecord{color:var(--ink2);border-color:var(--rule2)} .st-conflicts{color:var(--crit);border-color:var(--crit)}
+.evd-verified{color:var(--mute);border-color:var(--rule2)} .evd-partial{color:var(--warn);border-color:var(--warn)}
+.verdict{font-size:.94rem;color:var(--ink2);border-left:2px solid var(--rule2);padding-left:10px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.cols>div{padding:12px 14px;display:grid;gap:10px;align-content:start;min-width:0}
+.cols .camp{background:var(--panel2)} .cols .recd{background:var(--ground)}
+.lab{font:600 .72rem var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+blockquote.claim{font:normal .98rem/1.55 var(--sans);border-left-color:var(--claim);background:transparent;padding:4px 12px;overflow-wrap:anywhere}
+p.rec{font-size:.94rem;overflow-wrap:anywhere}
+p.none{color:var(--mute);font-size:.9rem}
+q.rq{quotes:"\201C" "\201D";color:var(--ink);background:var(--gold-bg);padding:0 2px;border-radius:2px}
+p.norec{color:var(--ink2)}
+.searched{display:block;margin-top:5px;font:400 .72rem/1.4 var(--mono);color:var(--mute)}
+b.dv{color:var(--gold);font-variant-numeric:tabular-nums}
+span.src{display:inline-block;margin:0 0 0 4px;padding:1px 7px;border:1px solid var(--rule2);border-top:1px solid var(--rule2);border-radius:999px;font:400 .72rem/1.35 var(--mono);color:var(--mute);vertical-align:1px;white-space:normal}
+span.src a{color:inherit;text-decoration:none} span.src a:hover{color:var(--gold);text-decoration:underline}
+span.src::before{content:"SRC ";color:var(--gold-dim)}
+span.src.s-campaign{border-color:var(--claim)} span.src.s-primary{border-color:var(--ok)} span.src.s-project{border-color:var(--gold-dim)}
+span.src.s-community{border-color:var(--community)} span.src.s-derived{border-color:var(--ink2)} span.src.s-author{border-color:var(--gold-dim)}
+span.src.s-transcribed{border-color:var(--warn)}
+.recd .tbl{font-size:.88rem} .recd td{min-width:110px} .recd td:last-child{min-width:220px}
+.companions{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 14px;font-size:.86rem;color:var(--mute)}
+footer .ror{display:grid;gap:4px}
+footer .ror b{color:var(--ink2)}
+@media (max-width:820px){.crossnav{position:static}}
+
+.cols{grid-template-columns:minmax(0,1fr)} @media (min-width:900px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1.8fr)}}
+.tblwrap{overflow-x:auto;display:grid;gap:6px} .tblwrap table{font-size:.86rem;border-collapse:collapse;min-width:420px}
+.tblwrap th,.tblwrap td{padding:5px 8px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+.tblwrap td b.dv{font-weight:600}
+details.more{border:1px solid var(--rule);border-radius:8px;background:var(--panel2)}
+details.more>summary{cursor:pointer;padding:10px 14px;color:var(--gold);font-weight:600}
+.more-body{padding:4px 14px 14px;display:grid;gap:12px}
+span.src.s-classa{border-color:var(--ok)} span.src.s-classb{border-color:var(--ink2)}
+span.src.s-classa::before{content:"A ";color:var(--gold-dim)} span.src.s-classb::before{content:"B ";color:var(--gold-dim)}
+figure.chartfig{margin:0;display:grid;gap:8px} svg.chart{width:100%;height:auto;background:var(--panel);border:1px solid var(--rule);border-radius:8px}
+svg.chart .grid{stroke:var(--rule2);stroke-width:1} svg.chart .ax{fill:var(--mute);font:12px var(--sans)} svg.chart .dl{fill:var(--ink2);font:12px var(--sans)}
+svg.chart .l-act{fill:none;stroke:var(--gold);stroke-width:2} svg.chart .l-bud{fill:none;stroke:var(--claim);stroke-width:2;stroke-dasharray:6 4}
+svg.chart .m-act{fill:var(--gold);stroke:var(--panel);stroke-width:2} svg.chart .m-bud{fill:var(--claim);stroke:var(--panel);stroke-width:2}
+svg.chart .bar{fill:var(--gold)} svg.chart .res{stroke:var(--crit);stroke-width:2;stroke-dasharray:5 3}
+.legend2{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.82rem;color:var(--ink2)} .legend2 i{display:inline-block;width:18px;height:0;border-top:2px solid;margin-right:6px;vertical-align:4px}
+.legend2 .k-act{border-color:var(--gold)} .legend2 .k-bud{border-color:var(--claim);border-top-style:dashed} .legend2 .k-bar{border-top-width:8px;border-color:var(--gold)} .legend2 .k-res{border-color:var(--crit);border-top-style:dashed}
+pre.doc{white-space:pre-wrap;font:12px/1.45 var(--mono);color:var(--ink2);max-height:480px;overflow:auto;background:var(--ground);padding:12px;border-radius:6px}
+.closing{display:grid;gap:14px;max-width:72ch;font:1.05rem/1.6 var(--serif)} .sigline{color:var(--gold)}
+</style></head>
+<body><nav class="crossnav" aria-label="The seven pages"><a href="https://sha-levi.github.io/extraction-with-no-end/" data-page="extraction-with-no-end">Extraction With No End</a><a href="https://sha-levi.github.io/eye-spy-with-my-little-i/" data-page="eye-spy">Eye Spy With My Little I</a><a href="https://sha-levi.github.io/the-penny-tax/" data-page="penny-tax">The Penny Tax</a><a href="https://sha-levi.github.io/the-school-districts-money/" data-page="school-district">The School District’s Money</a><a href="https://sha-levi.github.io/know-your-representatives/" data-page="know-your-representatives">Know Your Representatives</a><a href="https://sha-levi.github.io/the-financial-record/" data-page="the-financial-record" aria-current="page">The Financial Record</a><a href="https://sha-levi.github.io/sheriffs-office/" data-page="sheriffs-office">The Oath and the Office</a></nav><div class="wrap">
+<header class="mast">
+<span class="eyebrow">Chesterfield County, South Carolina · General Fund, FY2016–FY2027</span>
+<h1>The Financial Record</h1>
+<p class="sub">Chesterfield County’s adopted budgets and audited financial statements — what they say, where they disagree, and what they don’t explain.</p>
+<div class="figs"><div class="fig"><b data-v="n_budgets">11</b><span>adopted budgets examined, FY2016-17 through FY2026-27</span></div><div class="fig"><b data-v="n_audits">10</b><span>audited years compared, FY2016 through FY2025</span></div><div class="fig"><b data-v="n_deptyears">292</b><span>department-years cross-checked, budget against audit</span></div><div class="fig"><b data-v="n_pages">744</b><span>scanned pages read and reconciled</span></div></div>
+<p class="lede">This page presents Chesterfield County’s own financial documents: the budgets the County Council adopted and the audits the County’s own auditor produced. Where those records disagree with each other, both figures are shown. Where a pattern repeats across a decade, the decade is shown. Where the county asks for <b class="dv" data-v="rfq_budget">$50 million</b>, the record that precedes the ask is shown. <span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p>
+<div class="legend"><div><b>Source class</b><span><span class="src s-classa" data-key="legend"></span> a county document on disk, by document ID. <span class="src s-classb" data-key="legend"></span> a public record or news report, linked, with the date it was read.</span></div>
+<div><b>Figures</b><span>Every figure is computed from the documents named in its tags. Gold figures are pinned to the data; the gate rebuilds them and compares.</span></div></div>
+</header>
+<nav class="toc" aria-label="Sections"><a href="#ratio">More than five to one</a><a href="#overruns">Same departments, almost every year</a><a href="#fund-balance">Down three years running</a><a href="#revenue">Revenue beats budget almost every year</a><a href="#arithmetic">Two totals for one budget</a><a href="#frozen">Twenty-seven lines, eleven budgets, one amount</a><a href="#detention">A new jail and the one it replaces</a><a href="#auditor">One firm, every audit</a><a href="#shelter">Below the stated budget in seven of eleven years</a><a href="#ask">Up to fifty million dollars in bonds</a></nav>
+<main><section id="ratio" class="part"><div class="part-head"><span class="eyebrow">How the county spends</span><h2>More than five to one</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">The FY2026-27 budget, as adopted on June 4, 2026, sets the General Fund’s department appropriations. It does not group them. <span class="src s-classa" data-src="bud2627" data-class="A" title="cc2026-2027budget.pdf">Ordinance 26-27-01, FY2026-27 budget</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">For every dollar the FY2026-27 budget sets for the library, the animal shelter, family court and veterans’ affairs (<b class="dv" data-v="S_fy2627">$1,841,310</b>), it sets <b class="dv" data-v="r_fy2627_d">$5.68</b> for the sheriff, detention center, school resource officers and sheriff sub-offices, magistrates, solicitor, public defender and coroner (<b class="dv" data-v="E_fy2627">$10,452,860</b>). <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><p class="rec">On audited actual spending the ratio went from <b class="dv" data-v="ar_2018">4.11</b> : 1 in FY2018 to <b class="dv" data-v="ar_2025">6.12</b> : 1 in FY2025, the highest of the decade. Enforcement departments spend past their budgets; the services lines stay near theirs. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p></div></div><figure class="chartfig"><svg viewBox="0 0 760 300" class="chart" role="img" aria-label="Enforcement-to-services ratio, adopted budgets FY2016-17 to FY2026-27 and audited actual spending FY2017 to FY2025"><line x1="48" x2="640" y1="215.0" y2="215.0" class="grid"/><text x="40" y="219.0" class="ax" text-anchor="end">4.0</text><line x1="48" x2="640" y1="137.0" y2="137.0" class="grid"/><text x="40" y="141.0" class="ax" text-anchor="end">5.0</text><line x1="48" x2="640" y1="59.0" y2="59.0" class="grid"/><text x="40" y="63.0" class="ax" text-anchor="end">6.0</text><text x="48.0" y="272" class="ax" text-anchor="middle">16-17</text><text x="107.2" y="272" class="ax" text-anchor="middle">17-18</text><text x="166.4" y="272" class="ax" text-anchor="middle">18-19</text><text x="225.6" y="272" class="ax" text-anchor="middle">19-20</text><text x="284.8" y="272" class="ax" text-anchor="middle">20-21</text><text x="344.0" y="272" class="ax" text-anchor="middle">21-22</text><text x="403.2" y="272" class="ax" text-anchor="middle">22-23</text><text x="462.4" y="272" class="ax" text-anchor="middle">23-24</text><text x="521.6" y="272" class="ax" text-anchor="middle">24-25</text><text x="580.8" y="272" class="ax" text-anchor="middle">25-26</text><text x="640.0" y="272" class="ax" text-anchor="middle">26-27</text><path d="M48.0,147.1 L107.2,135.4 L166.4,140.9 L225.6,136.2 L284.8,118.3 L344.0,90.2 L403.2,126.9 L462.4,127.6 L521.6,147.1 L580.8,100.3 L640.0,84.0" class="l-bud"/><path d="M48.0,205.6 L107.2,206.4 L166.4,205.6 L225.6,183.8 L284.8,117.5 L344.0,130.8 L403.2,100.3 L462.4,90.2 L521.6,49.6" class="l-act"/><rect x="44.0" y="143.1" width="8" height="8" class="m-bud" data-v="br_fy1617"><title>FY2016-17 adopted budget: 4.87 : 1</title></rect><rect x="103.2" y="131.4" width="8" height="8" class="m-bud" data-v="br_fy1718"><title>FY2017-18 adopted budget: 5.02 : 1</title></rect><rect x="162.4" y="136.9" width="8" height="8" class="m-bud" data-v="br_fy1819"><title>FY2018-19 adopted budget: 4.95 : 1</title></rect><rect x="221.6" y="132.2" width="8" height="8" class="m-bud" data-v="br_fy1920"><title>FY2019-20 adopted budget: 5.01 : 1</title></rect><rect x="280.8" y="114.3" width="8" height="8" class="m-bud" data-v="br_fy2021"><title>FY2020-21 adopted budget: 5.24 : 1</title></rect><rect x="340.0" y="86.2" width="8" height="8" class="m-bud" data-v="br_fy2122"><title>FY2021-22 adopted budget: 5.60 : 1</title></rect><rect x="399.2" y="122.9" width="8" height="8" class="m-bud" data-v="br_fy2223"><title>FY2022-23 adopted budget: 5.13 : 1</title></rect><rect x="458.4" y="123.6" width="8" height="8" class="m-bud" data-v="br_fy2324"><title>FY2023-24 adopted budget: 5.12 : 1</title></rect><rect x="517.6" y="143.1" width="8" height="8" class="m-bud" data-v="br_fy2425"><title>FY2024-25 adopted budget: 4.87 : 1</title></rect><rect x="576.8" y="96.3" width="8" height="8" class="m-bud" data-v="br_fy2526"><title>FY2025-26 adopted budget: 5.47 : 1</title></rect><rect x="636.0" y="80.0" width="8" height="8" class="m-bud" data-v="br_fy2627"><title>FY2026-27 adopted budget: 5.68 : 1</title></rect><circle cx="48.0" cy="205.6" r="4.5" class="m-act" data-v="ar_2017"><title>FY2017 actual: 4.12 : 1</title></circle><circle cx="107.2" cy="206.4" r="4.5" class="m-act" data-v="ar_2018"><title>FY2018 actual: 4.11 : 1</title></circle><circle cx="166.4" cy="205.6" r="4.5" class="m-act" data-v="ar_2019"><title>FY2019 actual: 4.12 : 1</title></circle><circle cx="225.6" cy="183.8" r="4.5" class="m-act" data-v="ar_2020"><title>FY2020 actual: 4.40 : 1</title></circle><circle cx="284.8" cy="117.5" r="4.5" class="m-act" data-v="ar_2021"><title>FY2021 actual: 5.25 : 1</title></circle><circle cx="344.0" cy="130.8" r="4.5" class="m-act" data-v="ar_2022"><title>FY2022 actual: 5.08 : 1</title></circle><circle cx="403.2" cy="100.3" r="4.5" class="m-act" data-v="ar_2023"><title>FY2023 actual: 5.47 : 1</title></circle><circle cx="462.4" cy="90.2" r="4.5" class="m-act" data-v="ar_2024"><title>FY2024 actual: 5.60 : 1</title></circle><circle cx="521.6" cy="49.6" r="4.5" class="m-act" data-v="ar_2025"><title>FY2025 actual: 6.12 : 1</title></circle><text x="650.0" y="88.0" class="dl">adopted budgets</text><text x="531.6" y="53.6" class="dl">audited actual</text></svg><div class="legend2"><span><i class="k-act"></i>audited actual spending (solid line, circles)</span><span><i class="k-bud"></i>adopted budgets (dashed line, squares)</span><span>x-axis: budget year; each audited point is the year that budget closes</span></div></figure><details class="more"><summary>The chart as a table</summary><div class="more-body"><div class="tblwrap" data-tsrc="budgets audits rep10"><table class="nums"><thead><tr><th>Budget year</th><th>Adopted budget ratio</th><th>Audited actual ratio</th></tr></thead><tbody><tr><td>FY2016-17</td><td><b class="dv" data-v="br_fy1617">4.87</b> : 1</td><td><b class="dv" data-v="ar_2017">4.12</b> : 1</td></tr><tr><td>FY2017-18</td><td><b class="dv" data-v="br_fy1718">5.02</b> : 1</td><td><b class="dv" data-v="ar_2018">4.11</b> : 1</td></tr><tr><td>FY2018-19</td><td><b class="dv" data-v="br_fy1819">4.95</b> : 1</td><td><b class="dv" data-v="ar_2019">4.12</b> : 1</td></tr><tr><td>FY2019-20</td><td><b class="dv" data-v="br_fy1920">5.01</b> : 1</td><td><b class="dv" data-v="ar_2020">4.40</b> : 1</td></tr><tr><td>FY2020-21</td><td><b class="dv" data-v="br_fy2021">5.24</b> : 1</td><td><b class="dv" data-v="ar_2021">5.25</b> : 1</td></tr><tr><td>FY2021-22</td><td><b class="dv" data-v="br_fy2122">5.60</b> : 1</td><td><b class="dv" data-v="ar_2022">5.08</b> : 1</td></tr><tr><td>FY2022-23</td><td><b class="dv" data-v="br_fy2223">5.13</b> : 1</td><td><b class="dv" data-v="ar_2023">5.47</b> : 1</td></tr><tr><td>FY2023-24</td><td><b class="dv" data-v="br_fy2324">5.12</b> : 1</td><td><b class="dv" data-v="ar_2024">5.60</b> : 1</td></tr><tr><td>FY2024-25</td><td><b class="dv" data-v="br_fy2425">4.87</b> : 1</td><td><b class="dv" data-v="ar_2025">6.12</b> : 1</td></tr><tr><td>FY2025-26</td><td><b class="dv" data-v="br_fy2526">5.47</b> : 1</td><td>not yet audited</td></tr><tr><td>FY2026-27</td><td><b class="dv" data-v="br_fy2627">5.68</b> : 1</td><td>not yet audited</td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div></div></details><details class="more"><summary>The grouping matters</summary><div class="more-body"><p class="rec">The grouping is this page’s, not the county’s. The same five budgets, five ways: <span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="budgets rep3"><table class="nums"><thead><tr><th>Grouping</th><th>FY2022-23</th><th>FY2023-24</th><th>FY2024-25</th><th>FY2025-26</th><th>FY2026-27</th></tr></thead><tbody><tr><td>Phase A grouping: sheriff, detention, SRO and sheriff sub-offices, magistrates, solicitor, public defender, coroner, against library, animal shelter, family court, veterans</td><td><b class="dv" data-v="s_ratio_fy2223">5.13</b> : 1</td><td><b class="dv" data-v="s_ratio_fy2324">5.12</b> : 1</td><td><b class="dv" data-v="s_ratio_fy2425">4.87</b> : 1</td><td><b class="dv" data-v="s_ratio_fy2526">5.47</b> : 1</td><td><b class="dv" data-v="s_ratio_fy2627">5.68</b> : 1</td></tr><tr><td>Family court counted as judicial, not as a service</td><td><b class="dv" data-v="s_ratio_fc_judicial_fy2223">6.43</b> : 1</td><td><b class="dv" data-v="s_ratio_fc_judicial_fy2324">6.29</b> : 1</td><td><b class="dv" data-v="s_ratio_fc_judicial_fy2425">5.91</b> : 1</td><td><b class="dv" data-v="s_ratio_fc_judicial_fy2526">6.67</b> : 1</td><td><b class="dv" data-v="s_ratio_fc_judicial_fy2627">6.93</b> : 1</td></tr><tr><td>Clerk of court, probate court and the residential judge added to the enforcement side</td><td><b class="dv" data-v="s_ratio_wide_fy2223">5.59</b> : 1</td><td><b class="dv" data-v="s_ratio_wide_fy2324">5.55</b> : 1</td><td><b class="dv" data-v="s_ratio_wide_fy2425">5.27</b> : 1</td><td><b class="dv" data-v="s_ratio_wide_fy2526">5.89</b> : 1</td><td><b class="dv" data-v="s_ratio_wide_fy2627">6.08</b> : 1</td></tr><tr><td>School resource officers netted against the reimbursement the county budgets for them</td><td><b class="dv" data-v="s_ratio_sro_net_fy2223">4.82</b> : 1</td><td><b class="dv" data-v="s_ratio_sro_net_fy2324">4.74</b> : 1</td><td><b class="dv" data-v="s_ratio_sro_net_fy2425">4.56</b> : 1</td><td><b class="dv" data-v="s_ratio_sro_net_fy2526">5.12</b> : 1</td><td><b class="dv" data-v="s_ratio_sro_net_fy2627">5.27</b> : 1</td></tr><tr><td>The ambulance contract counted as a service</td><td><b class="dv" data-v="s_ratio_amb_service_fy2223">2.69</b> : 1</td><td><b class="dv" data-v="s_ratio_amb_service_fy2324">2.27</b> : 1</td><td><b class="dv" data-v="s_ratio_amb_service_fy2425">2.23</b> : 1</td><td><b class="dv" data-v="s_ratio_amb_service_fy2526">2.49</b> : 1</td><td><b class="dv" data-v="s_ratio_amb_service_fy2627">2.61</b> : 1</td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></div></div></details><details class="more"><summary>What <b class="dv" data-v="child_fy2627">$2,500</b> buys</summary><div class="more-body"><p class="rec">Library line 455 100 872, “Children’s Programming”: <b class="dv" data-v="child_fy1617">$2,000</b> a year for <b class="dv" data-v="child_years_2000">5</b> budgets, then <b class="dv" data-v="child_fy2627">$2,500</b> a year for <b class="dv" data-v="child_years_2500">6</b>. At <b class="dv" data-v="pop">43,273</b> residents, <b class="dv" data-v="child_fy2627">$2,500</b> is <b class="dv" data-v="per_resident">$0.058</b> per resident. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">Economic Development’s marketing advertising line is larger than the animal shelter’s veterinary-expense line in <b class="dv" data-v="mkt_gt_vet">10</b> of the <b class="dv" data-v="n_budgets">11</b> budgets. In FY2026-27 both are <b class="dv" data-v="vet_fy2627">$23,000</b>. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="budgets rep10"><table class="nums"><thead><tr><th>Line</th><th>FY2016-17</th><th>FY2017-18</th><th>FY2018-19</th><th>FY2019-20</th><th>FY2020-21</th><th>FY2021-22</th><th>FY2022-23</th><th>FY2023-24</th><th>FY2024-25</th><th>FY2025-26</th><th>FY2026-27</th></tr></thead><tbody><tr><td>Children’s programming</td><td><b class="dv" data-v="child_fy1617">$2,000</b></td><td><b class="dv" data-v="child_fy1718">$2,000</b></td><td><b class="dv" data-v="child_fy1819">$2,000</b></td><td><b class="dv" data-v="child_fy1920">$2,000</b></td><td><b class="dv" data-v="child_fy2021">$2,000</b></td><td><b class="dv" data-v="child_fy2122">$2,500</b></td><td><b class="dv" data-v="child_fy2223">$2,500</b></td><td><b class="dv" data-v="child_fy2324">$2,500</b></td><td><b class="dv" data-v="child_fy2425">$2,500</b></td><td><b class="dv" data-v="child_fy2526">$2,500</b></td><td><b class="dv" data-v="child_fy2627">$2,500</b></td></tr><tr><td>Shelter vet expense</td><td><b class="dv" data-v="vet_fy1617">$50,000</b></td><td><b class="dv" data-v="vet_fy1718">$20,000</b></td><td><b class="dv" data-v="vet_fy1819">$18,000</b></td><td><b class="dv" data-v="vet_fy1920">$12,000</b></td><td><b class="dv" data-v="vet_fy2021">$12,000</b></td><td><b class="dv" data-v="vet_fy2122">$24,000</b></td><td><b class="dv" data-v="vet_fy2223">$24,000</b></td><td><b class="dv" data-v="vet_fy2324">$24,000</b></td><td><b class="dv" data-v="vet_fy2425">$24,000</b></td><td><b class="dv" data-v="vet_fy2526">$24,000</b></td><td><b class="dv" data-v="vet_fy2627">$23,000</b></td></tr><tr><td>Marketing advertising</td><td><b class="dv" data-v="mkt_fy1617">$80,075</b></td><td><b class="dv" data-v="mkt_fy1718">$25,075</b></td><td><b class="dv" data-v="mkt_fy1819">$80,075</b></td><td><b class="dv" data-v="mkt_fy1920">$80,075</b></td><td><b class="dv" data-v="mkt_fy2021">$25,075</b></td><td><b class="dv" data-v="mkt_fy2122">$80,075</b></td><td><b class="dv" data-v="mkt_fy2223">$25,075</b></td><td><b class="dv" data-v="mkt_fy2324">$25,075</b></td><td><b class="dv" data-v="mkt_fy2425">$25,075</b></td><td><b class="dv" data-v="mkt_fy2526">$25,075</b></td><td><b class="dv" data-v="mkt_fy2627">$23,000</b></td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div></div></details></section><section id="overruns" class="part"><div class="part-head"><span class="eyebrow">Who overspends and who doesn’t</span><h2>Same departments, almost every year</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">Each budget ordinance: <q class="rq">The department, division, or agency shall submit an explanation in writing, along with a plan for reducing the over-expenditure.</q> <span class="src s-classa" data-src="ord_s7" data-class="A" title="cc2026-2027budget.pdf, PDF p. 4">Ordinance 26-27-01, Section 7</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">Over the ten audited years the same departments spend past their final budget almost every year, and others never do. The coroner and the County Council & attorney are over in <b class="dv" data-v="ov_n_Coroner">10</b> of <b class="dv" data-v="ov_of_Coroner">10</b> years; the sheriff in <b class="dv" data-v="ov_n_Sheriff">9</b> of <b class="dv" data-v="ov_of_Sheriff">10</b>; the school resource officers every year from <b class="dv" data-v="sro_first_over">FY2019</b>. Magistrates, the Clerk of Court and Veterans’ Affairs are over in <b class="dv" data-v="ov_n_Magistrates">0</b> of <b class="dv" data-v="ov_of_Magistrates">10</b>. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="audits rep10"><table class="nums"><thead><tr><th>Department</th><th>Years over final budget</th><th>Sum of overruns</th></tr></thead><tbody><tr><td>Coroner</td><td><b class="dv" data-v="ov_n_Coroner">10</b> of <b class="dv" data-v="ov_of_Coroner">10</b></td><td><b class="dv" data-v="ov_sum_Coroner">$516,732</b></td></tr><tr><td>County Council &amp; Attorney</td><td><b class="dv" data-v="ov_n_County council &amp; attorney">10</b> of <b class="dv" data-v="ov_of_County council &amp; attorney">10</b></td><td><b class="dv" data-v="ov_sum_County council &amp; attorney">$305,267</b></td></tr><tr><td>Solicitor</td><td><b class="dv" data-v="ov_n_Solicitor">10</b> of <b class="dv" data-v="ov_of_Solicitor">10</b></td><td><b class="dv" data-v="ov_sum_Solicitor">$229,132</b></td></tr><tr><td>Sheriff</td><td><b class="dv" data-v="ov_n_Sheriff">9</b> of <b class="dv" data-v="ov_of_Sheriff">10</b></td><td><b class="dv" data-v="ov_sum_Sheriff">$1,211,842</b></td></tr><tr><td>School resource officers</td><td><b class="dv" data-v="ov_n_School resource officers">7</b> of <b class="dv" data-v="ov_of_School resource officers">10</b></td><td><b class="dv" data-v="ov_sum_School resource officers">$1,215,754</b></td></tr><tr><td>Animal shelter</td><td><b class="dv" data-v="ov_n_Animal shelter / services">8</b> of <b class="dv" data-v="ov_of_Animal shelter / services">10</b></td><td><b class="dv" data-v="ov_sum_Animal shelter / services">$721,281</b></td></tr><tr><td>Library</td><td><b class="dv" data-v="ov_n_Library">8</b> of <b class="dv" data-v="ov_of_Library">10</b></td><td><b class="dv" data-v="ov_sum_Library">$506,814</b></td></tr><tr><td>Detention center</td><td><b class="dv" data-v="ov_n_Detention center">6</b> of <b class="dv" data-v="ov_of_Detention center">10</b></td><td><b class="dv" data-v="ov_sum_Detention center">$603,609</b></td></tr><tr><td>Magistrates</td><td><b class="dv" data-v="ov_n_Magistrates">0</b> of <b class="dv" data-v="ov_of_Magistrates">10</b></td><td>—</td></tr><tr><td>Clerk of Court</td><td><b class="dv" data-v="ov_n_Clerk of court">0</b> of <b class="dv" data-v="ov_of_Clerk of court">10</b></td><td>—</td></tr><tr><td>Veterans&#x27; Affairs</td><td><b class="dv" data-v="ov_n_Veterans&#x27; affairs">0</b> of <b class="dv" data-v="ov_of_Veterans&#x27; affairs">10</b></td><td>—</td></tr><tr><td>Telecommunicators</td><td><b class="dv" data-v="ov_n_Telecommunicators">1</b> of <b class="dv" data-v="ov_of_Telecommunicators">10</b></td><td><b class="dv" data-v="ov_sum_Telecommunicators">$1,010</b></td></tr></tbody></table><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div><p class="rec">The solicitor’s line records spending every year against a final appropriation of <b class="dv" data-v="sol_final0">$0</b> in <b class="dv" data-v="sol_zero_years">9</b> of the <b class="dv" data-v="n_audits">10</b> years. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span></p><p class="rec">In the <b class="dv" data-v="n_minutes">46</b> sets of 2025–2026 Council and committee minutes on the record, no discussion of a department’s overrun appears. <span class="src s-classa" data-src="minutes" data-class="A" title="bbbea3_*.pdf">County Council and committee minutes, 2025–2026 (46 sets)</span></p></div></div><details class="more"><summary>Adopted budget against the prior year’s actual</summary><div class="more-body"><p class="rec">How often each department’s adopted budget was set below what it actually spent the year before: <span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="budgets audits rep10"><table class="nums"><thead><tr><th>Department</th><th>Budgets set below the prior year’s actual</th></tr></thead><tbody><tr><td>Coroner</td><td><b class="dv" data-v="pr_below_Coroner">10</b> of <b class="dv" data-v="pr_of_Coroner">10</b></td></tr><tr><td>Animal shelter</td><td><b class="dv" data-v="pr_below_Animal shelter">8</b> of <b class="dv" data-v="pr_of_Animal shelter">10</b></td></tr><tr><td>Library</td><td><b class="dv" data-v="pr_below_Library">7</b> of <b class="dv" data-v="pr_of_Library">10</b></td></tr><tr><td>Sheriff</td><td><b class="dv" data-v="pr_below_Sheriff">5</b> of <b class="dv" data-v="pr_of_Sheriff">10</b></td></tr><tr><td>Detention center</td><td><b class="dv" data-v="pr_below_Detention center">2</b> of <b class="dv" data-v="pr_of_Detention center">10</b></td></tr><tr><td>Magistrates</td><td><b class="dv" data-v="pr_below_Magistrates">0</b> of <b class="dv" data-v="pr_of_Magistrates">10</b></td></tr><tr><td>Veterans&#x27; Affairs</td><td><b class="dv" data-v="pr_below_Veterans&#x27; affairs">0</b> of <b class="dv" data-v="pr_of_Veterans&#x27; affairs">10</b></td></tr><tr><td>Telecommunicators</td><td><b class="dv" data-v="pr_below_Telecommunicators">0</b> of <b class="dv" data-v="pr_of_Telecommunicators">10</b></td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div></div></details></section><section id="fund-balance" class="part"><div class="part-head"><span class="eyebrow">The county’s savings account</span><h2>Down three years running</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">Every budget from FY2016 to FY2025 planned to leave the fund balance close to where it was; FY2017 and FY2023–FY2025 planned a change of exactly <b class="dv" data-v="fbplan_2025">$0</b>. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">The General Fund balance built to <b class="dv" data-v="fb_peak">$2,829,883</b> in <b class="dv" data-v="fb_peak_year">FY2022</b>, then fell three years running to <b class="dv" data-v="fb_2025">$896,498</b> in FY2025, a drop of <b class="dv" data-v="fb_drop3">$1,933,385</b>. The unassigned part, the part not set aside for any purpose, was <b class="dv" data-v="un_2025">$279,300</b>: <b class="dv" data-v="un_days">4.4</b> days of the FY2024-25 operating budget (<b class="dv" data-v="gf_fy2425">$23,239,504</b>, or <b class="dv" data-v="gf_daily">$63,670</b> a day). <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="fbcsv" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">Unassigned General Fund balance, each audit’s balance sheet</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><p class="rec">GFOA recommends <q class="rq">no less than two months of regular general fund operating revenues or regular general fund operating expenditures</q>. The county’s balance is below that line in every year of the decade. <span class="src s-classb" data-src="gfoa" data-class="B"><a href="https://www.nhmunicipal.org/node/688">GFOA best practice, Appropriate Level of Unrestricted Fund Balance (as reprinted by the N.H. Municipal Association)</a> · read 2026-10-06</span><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span></p><p class="rec">FY2018 broke even to the dollar. Revenue less spending was <b class="dv" data-v="fy18_excess">−$546,929</b>; asset sales added <b class="dv" data-v="fy18_sale">$8,305</b>, transfers out took <b class="dv" data-v="fy18_out_abs">$45,000</b>, and the transfer in from the reserve fund was <b class="dv" data-v="fy18_in">$583,624</b>. Net change: <b class="dv" data-v="fy18_net">$0</b>. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">The FY2017 audit restated the opening balance down by <b class="dv" data-v="restate">$47,112</b>. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span></p></div></div><figure class="chartfig"><svg viewBox="0 0 760 300" class="chart" role="img" aria-label="General Fund balance at year end FY2016 to FY2025 against two months of budgeted expenditures"><line x1="70" x2="740" y1="207.2" y2="207.2" class="grid"/><text x="62" y="211.2" class="ax" text-anchor="end">$1M</text><line x1="70" x2="740" y1="160.4" y2="160.4" class="grid"/><text x="62" y="164.4" class="ax" text-anchor="end">$2M</text><line x1="70" x2="740" y1="113.6" y2="113.6" class="grid"/><text x="62" y="117.6" class="ax" text-anchor="end">$3M</text><line x1="70" x2="740" y1="66.8" y2="66.8" class="grid"/><text x="62" y="70.8" class="ax" text-anchor="end">$4M</text><line x1="70" x2="740" y1="20.0" y2="20.0" class="grid"/><text x="62" y="24.0" class="ax" text-anchor="end">$5M</text><rect x="76.0" y="162.4" width="55.0" height="91.6" rx="3" class="bar" data-v="fb_2016"><title>FY2016 General Fund balance: $1,957,202</title></rect><rect x="143.0" y="165.4" width="55.0" height="88.6" rx="3" class="bar" data-v="fb_2017"><title>FY2017 General Fund balance: $1,893,452</title></rect><rect x="210.0" y="165.4" width="55.0" height="88.6" rx="3" class="bar" data-v="fb_2018"><title>FY2018 General Fund balance: $1,893,452</title></rect><rect x="277.0" y="160.1" width="55.0" height="93.9" rx="3" class="bar" data-v="fb_2019"><title>FY2019 General Fund balance: $2,005,542</title></rect><rect x="344.0" y="141.1" width="55.0" height="112.9" rx="3" class="bar" data-v="fb_2020"><title>FY2020 General Fund balance: $2,412,213</title></rect><rect x="411.0" y="133.8" width="55.0" height="120.2" rx="3" class="bar" data-v="fb_2021"><title>FY2021 General Fund balance: $2,568,395</title></rect><rect x="478.0" y="121.6" width="55.0" height="132.4" rx="3" class="bar" data-v="fb_2022"><title>FY2022 General Fund balance: $2,829,883</title></rect><rect x="545.0" y="178.9" width="55.0" height="75.1" rx="3" class="bar" data-v="fb_2023"><title>FY2023 General Fund balance: $1,605,313</title></rect><rect x="612.0" y="186.0" width="55.0" height="68.0" rx="3" class="bar" data-v="fb_2024"><title>FY2024 General Fund balance: $1,454,050</title></rect><rect x="679.0" y="212.0" width="55.0" height="42.0" rx="3" class="bar" data-v="fb_2025"><title>FY2025 General Fund balance: $896,498</title></rect><line x1="73.0" x2="134.0" y1="107.4" y2="107.4" class="res" data-v="reserve2m_2016"><title>FY2016 two months of budgeted expenditures: $3,131,582</title></line><line x1="140.0" x2="201.0" y1="99.7" y2="99.7" class="res" data-v="reserve2m_2017"><title>FY2017 two months of budgeted expenditures: $3,296,935</title></line><line x1="207.0" x2="268.0" y1="96.2" y2="96.2" class="res" data-v="reserve2m_2018"><title>FY2018 two months of budgeted expenditures: $3,371,304</title></line><line x1="274.0" x2="335.0" y1="93.1" y2="93.1" class="res" data-v="reserve2m_2019"><title>FY2019 two months of budgeted expenditures: $3,438,188</title></line><line x1="341.0" x2="402.0" y1="87.1" y2="87.1" class="res" data-v="reserve2m_2020"><title>FY2020 two months of budgeted expenditures: $3,566,640</title></line><line x1="408.0" x2="469.0" y1="81.0" y2="81.0" class="res" data-v="reserve2m_2021"><title>FY2021 two months of budgeted expenditures: $3,697,470</title></line><line x1="475.0" x2="536.0" y1="71.9" y2="71.9" class="res" data-v="reserve2m_2022"><title>FY2022 two months of budgeted expenditures: $3,890,124</title></line><line x1="542.0" x2="603.0" y1="58.9" y2="58.9" class="res" data-v="reserve2m_2023"><title>FY2023 two months of budgeted expenditures: $4,168,860</title></line><line x1="609.0" x2="670.0" y1="43.2" y2="43.2" class="res" data-v="reserve2m_2024"><title>FY2024 two months of budgeted expenditures: $4,504,651</title></line><line x1="676.0" x2="737.0" y1="32.9" y2="32.9" class="res" data-v="reserve2m_2025"><title>FY2025 two months of budgeted expenditures: $4,723,302</title></line><text x="103.5" y="272" class="ax" text-anchor="middle">2016</text><text x="170.5" y="272" class="ax" text-anchor="middle">2017</text><text x="237.5" y="272" class="ax" text-anchor="middle">2018</text><text x="304.5" y="272" class="ax" text-anchor="middle">2019</text><text x="371.5" y="272" class="ax" text-anchor="middle">2020</text><text x="438.5" y="272" class="ax" text-anchor="middle">2021</text><text x="505.5" y="272" class="ax" text-anchor="middle">2022</text><text x="572.5" y="272" class="ax" text-anchor="middle">2023</text><text x="639.5" y="272" class="ax" text-anchor="middle">2024</text><text x="706.5" y="272" class="ax" text-anchor="middle">2025</text></svg><div class="legend2"><span><i class="k-bar"></i>General Fund balance at year end (all components)</span><span><i class="k-res"></i>two months of that year’s budgeted expenditures (GFOA minimum, dashed)</span></div></figure><details class="more"><summary>The chart as a table</summary><div class="more-body"><div class="tblwrap" data-tsrc="audits fbcsv gfoa rep10"><table class="nums"><thead><tr><th>Year</th><th>GF balance, year end</th><th>of which unassigned</th><th>Two months of budgeted expenditures</th><th>Change the budget planned</th><th>Change that happened</th></tr></thead><tbody><tr><td>FY2016</td><td><b class="dv" data-v="fb_2016">$1,957,202</b></td><td><b class="dv" data-v="un_2016">$1,369,268</b></td><td><b class="dv" data-v="reserve2m_2016">$3,131,582</b></td><td><b class="dv" data-v="fbplan_2016">−$89,980</b></td><td><b class="dv" data-v="fbnet_2016">$428,115</b></td></tr><tr><td>FY2017</td><td><b class="dv" data-v="fb_2017">$1,893,452</b></td><td><b class="dv" data-v="un_2017">$1,207,235</b></td><td><b class="dv" data-v="reserve2m_2017">$3,296,935</b></td><td><b class="dv" data-v="fbplan_2017">$0</b></td><td><b class="dv" data-v="fbnet_2017">−$16,638</b></td></tr><tr><td>FY2018</td><td><b class="dv" data-v="fb_2018">$1,893,452</b></td><td><b class="dv" data-v="un_2018">$1,217,319</b></td><td><b class="dv" data-v="reserve2m_2018">$3,371,304</b></td><td><b class="dv" data-v="fbplan_2018">−$14,972</b></td><td><b class="dv" data-v="fbnet_2018">$0</b></td></tr><tr><td>FY2019</td><td><b class="dv" data-v="fb_2019">$2,005,542</b></td><td><b class="dv" data-v="un_2019">$1,328,457</b></td><td><b class="dv" data-v="reserve2m_2019">$3,438,188</b></td><td><b class="dv" data-v="fbplan_2019">$69,534</b></td><td><b class="dv" data-v="fbnet_2019">$112,090</b></td></tr><tr><td>FY2020</td><td><b class="dv" data-v="fb_2020">$2,412,213</b></td><td><b class="dv" data-v="un_2020">$1,262,726</b></td><td><b class="dv" data-v="reserve2m_2020">$3,566,640</b></td><td><b class="dv" data-v="fbplan_2020">−$20,348</b></td><td><b class="dv" data-v="fbnet_2020">$406,671</b></td></tr><tr><td>FY2021</td><td><b class="dv" data-v="fb_2021">$2,568,395</b></td><td><b class="dv" data-v="un_2021">$1,423,442</b></td><td><b class="dv" data-v="reserve2m_2021">$3,697,470</b></td><td><b class="dv" data-v="fbplan_2021">−$2,196</b></td><td><b class="dv" data-v="fbnet_2021">$156,182</b></td></tr><tr><td>FY2022</td><td><b class="dv" data-v="fb_2022">$2,829,883</b></td><td><b class="dv" data-v="un_2022">$2,224,756</b></td><td><b class="dv" data-v="reserve2m_2022">$3,890,124</b></td><td><b class="dv" data-v="fbplan_2022">−$9,175</b></td><td><b class="dv" data-v="fbnet_2022">$261,488</b></td></tr><tr><td>FY2023</td><td><b class="dv" data-v="fb_2023">$1,605,313</b></td><td><b class="dv" data-v="un_2023">$711,736</b></td><td><b class="dv" data-v="reserve2m_2023">$4,168,860</b></td><td><b class="dv" data-v="fbplan_2023">$0</b></td><td><b class="dv" data-v="fbnet_2023">−$1,224,570</b></td></tr><tr><td>FY2024</td><td><b class="dv" data-v="fb_2024">$1,454,050</b></td><td><b class="dv" data-v="un_2024">$982,921</b></td><td><b class="dv" data-v="reserve2m_2024">$4,504,651</b></td><td><b class="dv" data-v="fbplan_2024">$0</b></td><td><b class="dv" data-v="fbnet_2024">−$151,263</b></td></tr><tr><td>FY2025</td><td><b class="dv" data-v="fb_2025">$896,498</b></td><td><b class="dv" data-v="un_2025">$279,300</b></td><td><b class="dv" data-v="reserve2m_2025">$4,723,302</b></td><td><b class="dv" data-v="fbplan_2025">$0</b></td><td><b class="dv" data-v="fbnet_2025">−$557,552</b></td></tr></tbody></table><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="fbcsv" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">Unassigned General Fund balance, each audit’s balance sheet</span><span class="src s-classb" data-src="gfoa" data-class="B"><a href="https://www.nhmunicipal.org/node/688">GFOA best practice, Appropriate Level of Unrestricted Fund Balance (as reprinted by the N.H. Municipal Association)</a> · read 2026-10-06</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div></div></details><details class="more"><summary>Where the money went</summary><div class="more-body"><p class="rec">In FY2025 the Public Safety function spent <b class="dv" data-v="ps_function_over">$856,858</b> past its final budget; the sheriff, detention center and school resource officers alone were <b class="dv" data-v="ccso3_over">$1,093,022</b> over. <span class="src s-classa" data-src="aud2025" data-class="A" title="CC_AUDIT_2025.pdf">FY2025 audit, Schedule 1, PDF pp. 53–54</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">FY2025 revenue came in <b class="dv" data-v="rev_var_2025">$23,105,979</b> above the final budget. <b class="dv" data-v="grant_var_2025">$19,015,430</b> of that was the Grants line. The same year, Grant Programs spending ran <b class="dv" data-v="grantprog_over">$21,480,102</b> past its own final budget. <span class="src s-classa" data-src="aud2025" data-class="A" title="CC_AUDIT_2025.pdf">FY2025 audit, Schedule 1, PDF pp. 53–54</span></p><p class="rec">The FY2025-26 budget’s summary page carries Non-departmental at <b class="dv" data-v="nondept_summary">$4,453,101</b>. The Non-departmental page itself prints <b class="dv" data-v="nondept_page">$4,555,305</b>: <b class="dv" data-v="nondept_gap">$102,204</b> apart, in the same adopted document. <span class="src s-classa" data-src="bud2526" data-class="A" title="CC2025-2026budget.pdf">FY2025-26 budget, PDF pp. 19–20 and 28</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p></div></details></section><section id="revenue" class="part"><div class="part-head"><span class="eyebrow">What the county collects against what it projects</span><h2>Revenue beats budget almost every year</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">The budget ordinance appropriates the General Fund and states that the appropriations <q class="rq">shall not in any case be exceeded</q>. <span class="src s-classa" data-src="ord_s5" data-class="A" title="cc2026-2027budget.pdf, PDF p. 3">Ordinance 26-27-01, Section 5</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">Actual revenue beats the budget almost every year. Grants and intergovernmental revenue beat it in <b class="dv" data-v="rv_n_grants">10</b> of <b class="dv" data-v="rv_of_grants">10</b> years, the local option sales tax in <b class="dv" data-v="rv_n_local_option_sales_tax">8</b> of <b class="dv" data-v="rv_of_local_option_sales_tax">10</b> (<b class="dv" data-v="rv_sum_local_option_sales_tax">$5,593,530</b> over the decade). Property tax is the one source estimated close to actual: over in <b class="dv" data-v="rv_n_property_taxes">4</b> of <b class="dv" data-v="rv_of_property_taxes">10</b>. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="audits rep10"><table class="nums"><thead><tr><th>Source</th><th>Years actual above budget</th><th>Cumulative actual less budget</th></tr></thead><tbody><tr><td>Grants</td><td><b class="dv" data-v="rv_n_grants">10</b> of <b class="dv" data-v="rv_of_grants">10</b></td><td><b class="dv" data-v="rv_sum_grants">$28,827,831</b></td></tr><tr><td>Intergovernmental</td><td><b class="dv" data-v="rv_n_intergovernmental">10</b> of <b class="dv" data-v="rv_of_intergovernmental">10</b></td><td><b class="dv" data-v="rv_sum_intergovernmental">$11,522,334</b></td></tr><tr><td>Miscellaneous</td><td><b class="dv" data-v="rv_n_miscellaneous">10</b> of <b class="dv" data-v="rv_of_miscellaneous">10</b></td><td><b class="dv" data-v="rv_sum_miscellaneous">$2,433,840</b></td></tr><tr><td>Charges for services</td><td><b class="dv" data-v="rv_n_charges_for_services">9</b> of <b class="dv" data-v="rv_of_charges_for_services">10</b></td><td><b class="dv" data-v="rv_sum_charges_for_services">$2,040,268</b></td></tr><tr><td>Local option sales tax</td><td><b class="dv" data-v="rv_n_local_option_sales_tax">8</b> of <b class="dv" data-v="rv_of_local_option_sales_tax">10</b></td><td><b class="dv" data-v="rv_sum_local_option_sales_tax">$5,593,530</b></td></tr><tr><td>Fire department dues</td><td><b class="dv" data-v="rv_n_fire_department_dues">8</b> of <b class="dv" data-v="rv_of_fire_department_dues">10</b></td><td><b class="dv" data-v="rv_sum_fire_department_dues">$251,645</b></td></tr><tr><td>Licenses and permits</td><td><b class="dv" data-v="rv_n_licenses_and_permits">7</b> of <b class="dv" data-v="rv_of_licenses_and_permits">10</b></td><td><b class="dv" data-v="rv_sum_licenses_and_permits">$942,113</b></td></tr><tr><td>Investment earnings</td><td><b class="dv" data-v="rv_n_investment_earnings">7</b> of <b class="dv" data-v="rv_of_investment_earnings">8</b></td><td><b class="dv" data-v="rv_sum_investment_earnings">$1,938,197</b></td></tr><tr><td>Property taxes</td><td><b class="dv" data-v="rv_n_property_taxes">4</b> of <b class="dv" data-v="rv_of_property_taxes">10</b></td><td><b class="dv" data-v="rv_sum_property_taxes">−$168,485</b></td></tr><tr><td>Fees and fines</td><td><b class="dv" data-v="rv_n_fees_and_fines">3</b> of <b class="dv" data-v="rv_of_fees_and_fines">10</b></td><td><b class="dv" data-v="rv_sum_fees_and_fines">−$142,280</b></td></tr></tbody></table><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div><p class="rec">Total General Fund spending exceeded the final appropriation in <b class="dv" data-v="exp_over_final">8</b> of the <b class="dv" data-v="n_audits">10</b> audited years. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p></div></div><details class="more"><summary>The <b class="dv" data-v="tax_total">$15.7 million</b></summary><div class="more-body"><p class="rec">The FY2025 audit: the Tax Account <q class="rq">was missing approximately $2.5 million of revenue transactions and $13.2 million of expenditure transactions.</q> It was found <q class="rq">when an outside accountant was hired by the</q> County. <q class="rq">This is a repeat finding of 2024-001.</q> <span class="src s-classa" data-src="sa2025" data-class="A" title="CC_AUDIT_2025(SingleAudit).pdf">FY2025 Single Audit, Schedule of Findings, Finding 2025-001</span></p><p class="rec">The auditor’s recommendation: <q class="rq">checks should be printed directly from the software instead of being hand written and manually keyed into the software at a later date.</q> <span class="src s-classa" data-src="sa2025" data-class="A" title="CC_AUDIT_2025(SingleAudit).pdf">FY2025 Single Audit, Schedule of Findings, Finding 2025-001</span></p><p class="rec">The prior finding’s status: <q class="rq">This finding was not corrected, and no partial correction was accomplished during the fiscal year.</q> <span class="src s-classa" data-src="sa2025" data-class="A" title="CC_AUDIT_2025(SingleAudit).pdf">FY2025 Single Audit, Schedule of Findings, Finding 2025-001</span></p><p class="rec">The Treasurer is Fred Harris. <span class="src s-classb" data-src="scac" data-class="B"><a href="https://www.sccounties.org/county/chesterfield-county/directory">S.C. Association of Counties, Chesterfield County directory</a> · read 2026-10-03</span></p><p class="rec">The capital project sales tax statute: the State Treasurer distributes the revenue <q class="rq">quarterly to the county treasurer</q>, and <q class="rq">the county treasurer or the county administrator shall certify</q> the net proceeds applied to each project. <span class="src s-classa" data-src="statute" data-class="A" title="LexisNexis print">S.C. Code § 4-10-360 (Capital Project Sales Tax Act)</span></p><p class="rec">Council’s Finance Committee, Nov 19, 2025, voted unanimously <q class="rq">to obtain a full forensic audit of the Treasurer’s Office and have someone from the State Treasurer’s Office be involved along with a member of SLED.</q> <span class="src s-classa" data-src="m1119" data-class="A" title="bbbea3_893ceecf2b3c4f2aaefa75ab38e5b00c.pdf">Finance Committee minutes, Nov 19, 2025</span></p><p class="rec">County Council, Jan 5, 2026, voted unanimously to <q class="rq">send a letter to the State Treasurer and the Governor stating Council’s concerns with the leadership of the Chesterfield County Treasurer’s Office.</q> <span class="src s-classa" data-src="m0105" data-class="A" title="bbbea3_d796889887034601901fe2b64d807e56.pdf">County Council minutes, Jan 5, 2026</span></p></div></details></section><section id="arithmetic" class="part"><div class="part-head"><span class="eyebrow">Where the county’s own documents disagree</span><h2>Two totals for one budget</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">Each budget’s summary page closes with <q class="rq">FINAL REVENUE MINUS EXPENDITURES</q> of zero. <span class="src s-classa" data-src="bud2526" data-class="A" title="CC2025-2026budget.pdf">FY2025-26 budget, PDF pp. 19–20 and 28</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">The adopted FY2018-19 budget carries two summary pages. One totals the General Fund operating budget at <b class="dv" data-v="toc_gf">$17,193,599</b>; the other at <b class="dv" data-v="final_gf">$17,359,490</b>: <b class="dv" data-v="toc_gap">$165,891</b> apart. The line items and the audit follow the second. <span class="src s-classa" data-src="bud1819" data-class="A" title="CC_BUDGET_2018-2019.pdf">FY2018-19 budget, PDF pp. 16–17 (two summary pages)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">In <b class="dv" data-v="n_asym">6</b> of the <b class="dv" data-v="n_budgets">11</b> budgets, the summary reaches zero by subtracting the FILOT 10% line at one figure from revenue and another from spending. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="budgets rep10"><table class="nums"><thead><tr><th>Budget</th><th>FILOT subtracted from revenue</th><th>from spending</th><th>Gap the summary does not show</th></tr></thead><tbody><tr><td>FY2016-17</td><td><b class="dv" data-v="filot_rev_fy1617">$566,000</b></td><td><b class="dv" data-v="filot_exp_fy1617">$566,000</b></td><td>—</td></tr><tr><td>FY2017-18</td><td><b class="dv" data-v="filot_rev_fy1718">$620,000</b></td><td><b class="dv" data-v="filot_exp_fy1718">$620,000</b></td><td>—</td></tr><tr><td>FY2018-19</td><td><b class="dv" data-v="filot_rev_fy1819">$750,000</b></td><td><b class="dv" data-v="filot_exp_fy1819">$750,000</b></td><td>—</td></tr><tr><td>FY2019-20</td><td><b class="dv" data-v="filot_rev_fy1920">$845,000</b></td><td><b class="dv" data-v="filot_exp_fy1920">$831,566</b></td><td><b class="dv" data-v="filot_gap_fy1920">$13,434</b></td></tr><tr><td>FY2020-21</td><td><b class="dv" data-v="filot_rev_fy2021">$900,000</b></td><td><b class="dv" data-v="filot_exp_fy2021">$886,566</b></td><td><b class="dv" data-v="filot_gap_fy2021">$13,434</b></td></tr><tr><td>FY2021-22</td><td><b class="dv" data-v="filot_rev_fy2122">$900,000</b></td><td><b class="dv" data-v="filot_exp_fy2122">$886,566</b></td><td><b class="dv" data-v="filot_gap_fy2122">$13,434</b></td></tr><tr><td>FY2022-23</td><td><b class="dv" data-v="filot_rev_fy2223">$900,000</b></td><td><b class="dv" data-v="filot_exp_fy2223">$886,566</b></td><td><b class="dv" data-v="filot_gap_fy2223">$13,434</b></td></tr><tr><td>FY2023-24</td><td><b class="dv" data-v="filot_rev_fy2324">$900,000</b></td><td><b class="dv" data-v="filot_exp_fy2324">$815,715</b></td><td><b class="dv" data-v="filot_gap_fy2324">$84,285</b></td></tr><tr><td>FY2025-26</td><td><b class="dv" data-v="filot_rev_fy2526">$700,000</b></td><td><b class="dv" data-v="filot_exp_fy2526">$815,715</b></td><td><b class="dv" data-v="filot_gap_fy2526">−$115,715</b></td></tr><tr><td>FY2026-27</td><td><b class="dv" data-v="filot_rev_fy2627">$775,000</b></td><td><b class="dv" data-v="filot_exp_fy2627">$775,000</b></td><td>—</td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div><p class="rec">The reserve fund’s page and the General Fund’s revenue page disagree on the reserve transfer by <b class="dv" data-v="res_gap_fy2425">$335,363</b> in FY2024-25 and <b class="dv" data-v="res_gap_fy2627">$21,867</b> in FY2026-27. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><p class="rec">Non-departmental, FY2025-26: summary <b class="dv" data-v="nondept_summary">$4,453,101</b>, page <b class="dv" data-v="nondept_page">$4,555,305</b>, gap <b class="dv" data-v="nondept_gap">$102,204</b>. <span class="src s-classa" data-src="bud2526" data-class="A" title="CC2025-2026budget.pdf">FY2025-26 budget, PDF pp. 19–20 and 28</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p></div></div><details class="more"><summary>Budget against audit: the reclassifications</summary><div class="more-body"><p class="rec">The audits’ “original budget” equals the adopted ordinance to the dollar for <b class="dv" data-v="n_match">267</b> of <b class="dv" data-v="n_deptyears">292</b> department-years. Every other difference is one of four reclassifications. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">Each year the audit moves the Victim’s Advocate fund’s <b class="dv" data-v="va300">$300</b> “Jefferson – V/A expense” line to the Sheriff. From FY2022 the audit’s Ambulance line carries the Sheriff’s highway-safety grant. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">The budget pages titled “School Resource Officer – Grant” (<b class="dv" data-v="jag_fy1920">$50,168</b> in FY2019-20, <b class="dv" data-v="jag_fy2021">$214,302</b> in FY2020-21) appear in the audits as “Grant: JAG narcotics”, with <b class="dv" data-v="jag_actual">$0</b> spent in both years. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p></div></details></section><section id="frozen" class="part"><div class="part-head"><span class="eyebrow">Lines that never change</span><h2>Twenty-seven lines, eleven budgets, one amount</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">The General Fund operating budget grew from <b class="dv" data-v="gf_fy1617">$17,051,716</b> (FY2016-17) to <b class="dv" data-v="gf_fy2627">$25,922,763</b> (FY2026-27). <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec"><b class="dv" data-v="n_frozen">27</b> department lines carry the same amount in all <b class="dv" data-v="n_budgets">11</b> budgets, including the <b class="dv" data-v="cont_fy2627">$29,000</b> contingency. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">Prisoner food cost: <b class="dv" data-v="food_fy1920">$203,439</b> in each of <b class="dv" data-v="food_n">5</b> budgets, FY2019-20 through FY2023-24. In FY2026-27 it is <b class="dv" data-v="food_fy2627">$290,000</b>. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p></div></div><details class="more"><summary>All <b class="dv" data-v="n_frozen">27</b> lines</summary><div class="more-body"><div class="tblwrap" data-tsrc="budgets rep10"><table class="nums"><thead><tr><th>Account</th><th>Line</th><th>Amount, every year</th></tr></thead><tbody><tr><td>408 100 805</td><td>C-FUNDS PROJECTS</td><td><b class="dv" data-v="fz_0">$500,000</b></td></tr><tr><td>415 400 896</td><td>DELINQUENT TAX EXPENSE (Revenue /ine item)</td><td><b class="dv" data-v="fz_1">$150,000</b></td></tr><tr><td>408 100 821</td><td>PUBLIC DEFENDER</td><td><b class="dv" data-v="fz_2">$136,550</b></td></tr><tr><td>465 100 900</td><td>ALLIANCE - DUES</td><td><b class="dv" data-v="fz_3">$41,000</b></td></tr><tr><td>408 100 808</td><td>HEALTH DEPARTMENT</td><td><b class="dv" data-v="fz_4">$37,182</b></td></tr><tr><td>415 400 610</td><td>GENERAL SUPPLIES</td><td><b class="dv" data-v="fz_5">$30,000</b></td></tr><tr><td>408 100 955</td><td>CONTINGENCY</td><td><b class="dv" data-v="fz_6">$29,000</b></td></tr><tr><td>444 600 864</td><td>INCENTIVE PURCHASES</td><td><b class="dv" data-v="fz_7">$25,000</b></td></tr><tr><td>421 200 254</td><td>BONDS / UNIFORMS</td><td><b class="dv" data-v="fz_8">$18,000</b></td></tr><tr><td>408 100 803</td><td>ASSOCIATION OF COUNTIES</td><td><b class="dv" data-v="fz_9">$10,085</b></td></tr><tr><td>408 100 860</td><td>PAGELAND/CHERAW AIRPORTS</td><td><b class="dv" data-v="fz_10">$10,000</b></td></tr><tr><td>408 100 870</td><td>C-FUNDS (PER DIEM)</td><td><b class="dv" data-v="fz_11">$6,000</b></td></tr><tr><td>415 210 610</td><td>GENERAL SUPPLIES</td><td><b class="dv" data-v="fz_12">$4,600</b></td></tr><tr><td>410 100 610</td><td>GENERAL SUPPLIES</td><td><b class="dv" data-v="fz_13">$4,000</b></td></tr><tr><td>465 100 822</td><td>INDUSTRIAL APPRECIATION</td><td><b class="dv" data-v="fz_14">$4,000</b></td></tr><tr><td>412 400 530</td><td>COMMUNICATIONS</td><td><b class="dv" data-v="fz_15">$3,500</b></td></tr><tr><td>415 400 254</td><td>BONDS</td><td><b class="dv" data-v="fz_16">$3,000</b></td></tr><tr><td>408 100 930</td><td>BOARD PER DIEMS</td><td><b class="dv" data-v="fz_17">$2,000</b></td></tr><tr><td>412 200 340</td><td>TECHNICAL SUPPORT/MICROFILM</td><td><b class="dv" data-v="fz_18">$1,000</b></td></tr><tr><td>408 100 920</td><td>INDIGENT CASKETS</td><td><b class="dv" data-v="fz_19">$950</b></td></tr><tr><td>415 210 843</td><td>ADS FOR TAXPAYERS</td><td><b class="dv" data-v="fz_20">$900</b></td></tr><tr><td>412 400 254</td><td>BONDS</td><td><b class="dv" data-v="fz_21">$650</b></td></tr><tr><td>415 100 254</td><td>BONDS</td><td><b class="dv" data-v="fz_22">$600</b></td></tr><tr><td>412 500 254</td><td>BONDS</td><td><b class="dv" data-v="fz_23">$400</b></td></tr><tr><td>415 210 254</td><td>BONDS</td><td><b class="dv" data-v="fz_24">$125</b></td></tr><tr><td>415 300 254</td><td>BONDS</td><td><b class="dv" data-v="fz_25">$100</b></td></tr><tr><td>455 100 254</td><td>BONDS / UNIFORMS</td><td><b class="dv" data-v="fz_26">$100</b></td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div></div></details></section><section id="detention" class="part"><div class="part-head"><span class="eyebrow">The <b class="dv" data-v="rfq_budget">$50 million</b> ask</span><h2>A new jail and the one it replaces</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">The ballot asks whether Council may <q class="rq">issue not exceeding $50,000,000 principal amount of general obligation bonds</q>, and if the sales tax falls short, <q class="rq">such bonds shall be payable from an ad valorem tax imposed on all taxable property in Chesterfield County</q>. <span class="src s-classa" data-src="ballot" data-class="A" title="county resolution, form of ballot">Form of ballot, Nov 3, 2026 referendum</span></p><p class="rec">The RFQ: <q class="rq">The County is planning a potential new build of a county detention facility with an estimated budget of $50 million.</q> <q class="rq">The new detention facility will be built at a new location on a 14+/- acre parcel owned by the County.</q> It names no funding source. <span class="src s-classa" data-src="rfq" data-class="A" title="RFQAESDetentionCenterSept222026.pdf">RFQ 04-2627, A/E services, new detention facility (Sept 22, 2026)</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">The current jail: <q class="rq">Currently, Chesterfield County’s aging jail facility has a rated capacity of 126 inmates and has no designated women or mental health areas.</q> <span class="src s-classa" data-src="rfq" data-class="A" title="RFQAESDetentionCenterSept222026.pdf">RFQ 04-2627, A/E services, new detention facility (Sept 22, 2026)</span></p><p class="rec">The food RFP for that jail: <q class="rq">Average daily population is expected to be approximately 130 inmates on a daily basis.</q> <span class="src s-classa" data-src="rfp" data-class="A" title="CCRFPINMATEFOODSERVICESept42026.pdf">RFP 03-26/27, inmate food service (Sept 4, 2026)</span></p><p class="rec">The detention center spent past its final budget in <b class="dv" data-v="det_over_n">6</b> of <b class="dv" data-v="ov_of_Detention center">10</b> audited years. FY2025 actual: <b class="dv" data-v="det_act_2025">$2,882,146</b>. The FY2025-26 budget set it <b class="dv" data-v="det_vs_2526">$268,715</b> below that; FY2026-27, <b class="dv" data-v="det_vs_2627">$88,999</b> below. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><p class="rec">FY2026-27 prisoner food: <b class="dv" data-v="food_fy2627">$290,000</b>. Over <b class="dv" data-v="meals">142,350</b> meals (130 inmates, three a day), that is <b class="dv" data-v="meal">$2.04</b> a meal. <span class="src s-classa" data-src="bud2627" data-class="A" title="cc2026-2027budget.pdf">Ordinance 26-27-01, FY2026-27 budget</span><span class="src s-classa" data-src="rfp" data-class="A" title="CCRFPINMATEFOODSERVICESept42026.pdf">RFP 03-26/27, inmate food service (Sept 4, 2026)</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><p class="rec">None of the eleven budgets has a capital projects fund, a jail construction line, a bond authorization or a sales-tax projection. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><p class="rec">Gary Blair died in his cell at the detention center on July 24, 2026. <q class="rq">Chesterfield County Coroner Kip Kiser previously confirmed that Blair’s manner of death was homicide.</q> <q class="rq">Six employees of the Chesterfield County Detention Center have now been terminated in connection with the death of Gary Blair</q>; <q class="rq">SLED continues its independent investigation</q>. <span class="src s-classb" data-src="link_blair" data-class="B"><a href="https://www.thelinkpaper.com/2026/09/29/four-chesterfield-county-detention-center-employees-terminated-in-connection-to-blair-death/">The Link, Sept 29, 2026</a> · read 2026-10-01</span></p></div></div><div class="tblwrap" data-tsrc="rep3"><table class="nums"><thead><tr><th>Date</th><th>Event</th></tr></thead><tbody><tr><td>May 18, 2026</td><td>The Administrator presents Council two ways to fund a detention center: the sales tax or a property-tax millage increase <span class="src s-classa" data-src="cpst" data-class="A" title="county minutes">CPST Commission and Council minutes, May–June 2026</span></td></tr><tr><td>June 4, 2026</td><td>FY2026-27 budget adopted. No detention construction line, no bond, no sales-tax projection <span class="src s-classa" data-src="bud2627" data-class="A" title="cc2026-2027budget.pdf">Ordinance 26-27-01, FY2026-27 budget</span></td></tr><tr><td>June 9, 2026</td><td>Capital Project Sales Tax Commission organizes; its one project is a new detention center <span class="src s-classa" data-src="cpst" data-class="A" title="county minutes">CPST Commission and Council minutes, May–June 2026</span></td></tr><tr><td>June 23, 2026</td><td>The Commission adopts the ballot question <span class="src s-classa" data-src="cpst" data-class="A" title="county minutes">CPST Commission and Council minutes, May–June 2026</span></td></tr><tr><td>Sept 4, 2026</td><td>Inmate food-service RFP for the current jail, one-year term <span class="src s-classa" data-src="rfp" data-class="A" title="CCRFPINMATEFOODSERVICESept42026.pdf">RFP 03-26/27, inmate food service (Sept 4, 2026)</span></td></tr><tr><td>Sept 22, 2026</td><td>RFQ for architects and engineers for a new detention facility <span class="src s-classa" data-src="rfq" data-class="A" title="RFQAESDetentionCenterSept222026.pdf">RFQ 04-2627, A/E services, new detention facility (Sept 22, 2026)</span></td></tr><tr><td>Nov 3, 2026</td><td>Referendum <span class="src s-classa" data-src="ballot" data-class="A" title="county resolution, form of ballot">Form of ballot, Nov 3, 2026 referendum</span></td></tr><tr><td>Nov 4, 2026</td><td>Statements of qualifications due, 1:00 p.m. <span class="src s-classa" data-src="rfq" data-class="A" title="RFQAESDetentionCenterSept222026.pdf">RFQ 04-2627, A/E services, new detention facility (Sept 22, 2026)</span></td></tr></tbody></table><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></div><details class="more"><summary>The RFQ, in full</summary><div class="more-body"><pre class="doc">  Chesterfield County, South Carolina
+
+       Request for Qualifications
+
+                04-2627
+
+  Architectural/Engineering Services
+
+                  For
+
+Construction of a New Detention Facility
+
+
+
+
+                   1
+                                   SCBO Advertisement for:
+
+                                 Request for Qualifications
+                             Architectural / Engineering Services
+
+Chesterfield County is requesting Statements of Qualifications from interested, qualified, and
+licensed Architects/Engineers or teams of Architects/Engineers for the following project:
+Construction of a New Detention Facility.
+
+RFQ documents may be obtained from the County’s website. www.chesterfieldcountysc.com
+
+Sealed Statements of Qualifications must be received on or before 1:00 p.m. on Wednesday,
+November 4, 2026 at 178 Mill Street, Chesterfield, SC 29709. Statements received after the
+stated time will not be considered. Statements must be in a sealed envelope, clearly marked “04
+2627Architectural/Engineering Services”. No site meetings or visits will be considered prior to the
+submission of proposals. Faxed or emailed submittals will not be accepted.
+
+
+
+
+                                                2
+REQUEST FOR QUALIFICATIONS: Architectural/Engineering Services
+
+SUBMISSION DEADLINE: Wednesday, November 4, 2026
+
+INTRODUCTION &amp; BACKGROUND: Chesterfield County (“the County”) is soliciting
+Statements of Qualifications for full service architectural and engineering jail design services
+associated with a proposed new detention center for the County. Currently, Chesterfield County’s
+aging jail facility has a rated capacity of 126 inmates and has no designated women or mental
+health areas. The facility faces challenges with crowding and lacks the space to properly classify
+its inmate population. The County has recently conducted a needs assessment for housing and the
+report recommended that a new facility be constructed with approximately 250 beds with a 330
+bed core thru year 2050. The new detention facility will be built at a new location on a 14+/-
+acre parcel owned by the County. The County had a preliminary due diligence summary report
+completed prior to the purchase of the land to ensure that it was an adequate area to construct a
+detention facility.
+
+PROJECT DESCRIPTION: The County is planning a potential new build of a county detention
+facility with an estimated budget of $50 million. The proposed facility would be located within
+Chesterfield Commerce Park, on Parkway Drive, in Chesterfield, South Carolina.
+
+SCOPE OF WORK: The County is seeking Statements of Qualifications for full service
+architectural and engineering jail design services to design a new initial capacity 250 beds with a
+330 bed core thru year 2050. The new detention center shall include, but not be limited to the
+following facilities: laundry, kitchen, intake and release, storage, maintenance room, courtroom,
+medical department, housing units, central control room, mental health/behavioral health area,
+short term observation area, visitation center, attorney meeting rooms, court/transport area, and
+property/evidence room.
+
+The County intends to enter into a contract with a licensed, qualified firm to provide professional
+services for the siting, design, assistance in preparation of construction bid documents, and
+construction oversight of the new Chesterfield County Detention facility. Services may include,
+but not be limited to: solicitation, project design, shop drawings, bidding, construction
+management, and construction inspection. Additional services may include, but not be limited to:
+an analysis of the new building location, and conducting an operating and maintenance study. The
+County also seeks the direction of the awarded firm as to the best approach for the bidding of a
+qualified General Contractor for successful project completion.
+
+INSTRUCTIONS: The Owner, Chesterfield County, hereby requests Statements of
+Qualifications for Architectural/Engineering Services. This Request for Qualifications (RFQ)
+solicitation does not commit the County to award a contract, to pay any cost incurred in the
+preparation of this proposal, or to procure or contract for these services.
+
+               Owner: Chesterfield County
+               Contact: Michelle Stanley, County Administrator
+               Email: [email]
+
+Please use the above contact and do not contact other staff or elected officials in regard to this
+procurement process. Improper contact may result in disqualification of your proposal. No
+pre-proposal conferences, meetings, or site visits shall be conducted. Any questions that are
+
+                                                3
+necessary to complete proposals can be sent in writing up to seven (7) days prior to the submission
+deadline to the contact listed above.
+
+Submit seven (7) copies of your firm’s Statement of Qualifications with one (1) PDF file on a USB
+flash drive on or before 1:00 p.m., on Wednesday, November 4, 2026. Statements of Qualifications
+received after that time will not be considered. Please mark your Statement of Qualifications with
+a label entitled “ 04-2627 Architectural/Engineering Services” and include the due date and time
+of your submission. Statements of Qualifications must be mailed or hand delivered. Faxed or
+emailed submissions will not be accepted.
+
+This Solicitation does not commit the County to award a contract, to pay any costs incurred in the
+preparation of submissions, or to procure or contract for the services solicited. The County has the
+right to reject any or all submissions, waive any minor irregularities, cancel in part or whole this
+Solicitation if it is in the best interests of the County, and award a contract that will be the most
+advantageous. The particulars of any Statement of Qualifications will remain confidential until a
+contract is signed with the successful offeror.
+
+KEY DEADLINES:
+
+1.        SCBO Announcement: Tuesday, September 22, 2026
+
+2.        Deadline for Questions: Wednesday, October 28, 2026 – 3:00 pm
+
+3.        Opening Date/Deadline for Receipt: Wednesday, November 4, 2026 – 1:00 p.m.
+
+4.        Anticipated Interview Dates range (if required): November 16, 2026 – December 4, 2026
+
+E-Mail Questions To:           [email]
+
+Mail Submissions To:           Chesterfield County Council
+                               Attn: Michelle Stanley
+                               178 Mill Street
+                               Chesterfield, SC 29709
+
+Delivery Address:              Chesterfield County Administration Office
+                               Attn: Michelle Stanley
+                               178 Mill Street
+                               Chesterfield, SC 29709
+
+Offerors mailing submissions should allow a sufficient mail delivery period to insure timely
+receipt of their submissions.
+
+SOQ CONTENTS:
+
+Statements of Qualification must include each requirement stated below:
+
+     1.      Cover Letter – Provide a cover letter with a summary of why your firm is the best
+             qualified for this project. Include contact information for the person leading the
+             proposal and interview process. Proposals must give the full name and address of the
+             Offeror. The person signing the transmittal letter should show the requisite title or
+             authority to bind the firm in a potential contract.
+                                                 4
+   2.       Introduction – Describe the firm’s abilities and qualifications related to this project,
+            including the number of years the firm has been in business, number of employees, and
+            the location in proximity to the County.
+
+   3.       Experience – Provide a detailed summary of relevant project experience. Include a
+            minimum of five (5) detention center/correctional facility projects that demonstrate
+            your firm’s experience, with the name and contact information of the client
+            representative for each respective project.
+
+   4.       Experience with SCDOC – Detail the firm’s successful experience working with the
+            South Carolina Department of Corrections’ Division of Compliance, Standards, and
+            Inspections.
+
+   5.       Key Personnel – Include brief resumes of key personnel that would be involved in this
+            project should your firm be awarded the contract. If consultants or engineers will be
+            used for services not provided in-house, please include a brief summary of the firm and
+            key personnel proposed. The County reserves the right to request additional or alternate
+            engineering or consulting firms.
+
+   6.       Workload – Provide your firm’s current workload and availability to meet the project
+            schedule/timeframe. Discuss the firm’s ability to meet the unique demands of design
+            schedules for government sector projects.
+
+   7.       Letters of Reference – Include a minimum of five (5) letters of reference.
+
+   8.       CMAR Partners – Provide a list of five (5) contractors that your firm has partnered
+            with on Construction Manager at Risk (CMAR) projects.
+
+   9.       Approach – Include your process for incorporating input from multiple stakeholders
+            during the design process; providing designs that meet budget goals; communicating
+            with the County; meeting all local code and ADA requirements; and working in a
+            CMAR delivery environment.
+
+   10.      Litigation – List and explain fully any current or past litigation your firm and/or key
+            sub-consultants have experienced within the last fifteen (15) years.
+
+   11.      Additional Information – Include any other information that might help the County
+            evaluate your firm’s ability to execute this project successfully.
+
+SELECTION CRITERIA:
+
+An Evaluation Committee will evaluate the proposals using the following criteria.
+
+        •   Firm’s overall experience and qualifications (30 points)
+        •   Ability and experience of proposed key personnel (30 points)
+        •   Workload and ability to meet schedules (20 points)
+        •   Design approach (10 points)
+        •   Ability to provide responsive service to the County for project team meetings and site
+            visits as required (10 points)
+
+                                                 5
+OTHER CONDITIONS:
+
+  1. The County reserves the right to cancel or reject any or all proposals and to negotiate and
+     award a contract deemed to be in the County’s best interest.
+
+  2. The County is not responsible for any costs incurred during the submission of proposals or
+     interviews. The County is not required to enter into a contract with any Offeror if deemed
+     to be in the best interest of the County.
+
+  3. By submitting an SOQ, the Offeror certifies that to the best of its knowledge that no
+     employee of the County, nor any member thereof, nor any public agency or official affected
+     by the proposal, has a pecuniary interest in the business of the Offeror, and that no person
+     associated with the Offeror has any interest that would conflict in any manner with the
+     performance of the proposal.
+
+  4. All proposals will be treated as public information unless otherwise specified. If your
+     submittal contains proprietary information, it must be marked as “confidential.” It is not
+     acceptable to mark every page as Confidential. Refer to the SC Code of Laws, Title 30 –
+     PUBLIC RECORDS, CHAPTER 4, Freedom of Information Act, to determine which
+     items may be considered confidential.
+
+  5. This public body does not discriminate against faith-based organizations or against a bidder
+     or offeror because of race, religion, color, sex, national origin, age, disability, or any other
+     basis prohibited by state law relating to discrimination in employment. All other County
+     policies and procedures shall apply.
+
+  6. The successful firm will be required to provide appropriate levels of insurance and meet
+     all County policies and procedures.
+
+  7. The successful firm shall perform the services as an independent contractor and shall not
+     be considered an employee, agent, partner, or joint venture of Chesterfield County.
+
+  8. The successful firm shall agree to indemnify and hold the County harmless to the extent
+     permitted by South Carolina law for claims arising from the firm’s negligence, errors,
+     omissions, or misconduct.
+
+  9. All professionals performing engineering or architect services shall maintain licenses as
+     required by South Carolina law.
+
+
+
+
+                                                6
+</pre><span class="src s-classa" data-src="rfq" data-class="A" title="RFQAESDetentionCenterSept222026.pdf">RFQ 04-2627, A/E services, new detention facility (Sept 22, 2026)</span></div></details><details class="more"><summary>The food-service RFP, specifications</summary><div class="more-body"><pre class="doc"> RFP – INMATE FOOD SERVICE ID NO. 03-26/27
+
+
+
+BID DUE: Monday, September 21, 2026 at 12:00 pm
+
+
+
+
+                                                  1
+                         TABLE OF CONTENTS
+
+
+
+ITEM DESCRIPTION                             PAGE NUMBER
+
+REQUEST FOR PROPOSAL                               3
+
+SPECIFICATIONS                                    3–5
+
+STAFFING                                          5–7
+
+FOOD &amp; SPECIFICATIONS                             7-9
+
+OPERATIONS                                       9 - 11
+
+DETENTION CENTER RESPONSIBILITIES                  11
+
+BILLING                                            11
+
+CONDITIONS                                         12
+
+SCHEDULE OF AWARD OF CONTRACT                      12
+
+SUBMISSION PROCEDURES AND REQUIREMENTS             13
+
+PROPOSAL FORM                                      14
+
+REFERENCE SHEET                                  15 - 16
+
+
+
+
+                                                           2
+                            REQUEST FOR PROPOSAL
+Proposal ID: 3-26/27 Inmate Food Service Proposal
+
+
+REQUEST FOR PROPOSAL
+
+The County of Chesterfield will accept bids for the provision of furnishing food service to
+include inmate feeding based on the specifications provided with this Request for Proposal.
+
+Bids will be received at the County Council Office, Administration Building located at 178 Mill
+Street, Chesterfield, South Carolina, 29709, until 12:00 Noon Local time, as indicated by personal
+timepiece of the County Administrator, on Monday, September 21, 2026 12:00 pm. The proposal
+ID as shown on the proposal must be clearly visible on the proposal submitted. Please contact Mr.
+Weldon Gainey, Interim Detention Center Administrator, at 843-623-2261 if you have any
+additional questions regarding the attached specifications.
+
+SPECIFICATIONS
+
+    A. GENERAL SPECIFICATIONS
+
+    1. Scope of Work
+
+        The contractor shall furnish all management, labor, food, materials and supplies
+        necessary to provide food service for the Chesterfield County Detention Center for
+        inmates, including special diet meals, seven days a week, for a period of one (1) year.
+        The contractor shall prepare at least 2 (two) hot meals a day. The Sheriff has requested
+        the hot meals be given at breakfast and dinner. This contract may be extended annually,
+        as agreed by both parties. Contractor shall include in its proposal the method by which it
+        expects to adjust the price per meal after the first year.
+
+    2. Contracting Officer
+
+        The Detention Center Administrator shall be the Contracting Officer who shall act as the
+        agent of the Chesterfield County Detention Center for the purpose of serving as the
+        Chesterfield County Detention Center contact person for the successful bidder,
+        hereinafter referred to as the Contractor, overseeing performance and completion of the
+        contract pursuant to its terms and receiving, reviewing, and processing billings from the
+        contractor, conducting periodic inspections of the food service area and reviewing menus.
+
+    3. Insurance
+
+        The Contractor shall carry appropriate insurance on its employees, products and property,
+        including Workers Compensation, and general liability in the minimum amount of
+        $1,000,000 per occurrence with aggregate of $2,000,000.
+
+        The Contractor shall provide the Chesterfield County not later than the date of
+        commencement of service under the contract with certificates of insurance for the
+        foregoing coverage’s, which designate the Chesterfield County Detention Center as an
+        additional insured with respect to the Contractor’s participation in the contract and which
+        includes a provision that the coverage shall not be cancelled, terminated or otherwise
+        modified without a thirty (30) day prior written notice provided to the Chesterfield
+        County Detention Center. Cancellation of insurance shall be cause for immediate
+        cancellation of the contract.
+
+                                                                                                     3
+4. Taxes, Licenses and Permits
+
+   The Contractor shall pay all applicable taxes and shall obtain and keep current all
+   necessary licenses and permits.
+
+
+5. Equal Employment Opportunity
+
+   Contractor shall at all times comply with all applicable Federal and State laws relating to
+   discrimination and equal employment opportunity, including the Americans with
+   Disabilities Act, and shall furnish documentation of compliance with such laws as
+   reasonably requested by the Chesterfield County Detention Center.
+
+6. Indemnity
+
+   The Contractor shall assume full responsibility for and shall indemnify the Chesterfield
+   County Detention Center for any damage or loss of any Chesterfield County Property,
+   including Building, fixtures, furnishings, equipment, supplies, accessories or parts
+   resulting in whole or part from any negligent acts or omissions of the contractor or any
+   employee, agent, or representative of the Contractor, except for negligence by the
+   Chesterfield County Detention Center.
+
+7. Failure to Perform
+
+   The Contractor shall perform the work in accordance with specifications. Failure to
+   perform the work as provided herein may result in written notice to the Contractor
+   terminating its right to proceed as to the whole or any part of the contract. In the event of
+   such termination, the Contractor shall be liable to the Chesterfield County Detention
+   Center for any excess costs for such services.
+
+   Any cost incurred by the Chesterfield County Detention Center failure of the Contractor
+   to abide by the food service agreement with the Chesterfield County Detention Center or
+   to perform the necessary services as described herein will be borne by the Contractor.
+
+8. Termination Notice
+
+   This contract may be terminated by either party provided a thirty (30) day written notice
+   is given to the other party. Written notice to Chesterfield County must be sent to the
+   Detention Center Interim. Administrator, Mr. Weldon Gainey at 319 Goodale Road,
+   Chesterfield, SC 29709 and copy to Chesterfield County Sheriff Office Attn: Sheriff
+   Cambo Streater 203 Watson Street, Chesterfield, SC 29709.
+
+
+9. Subcontract
+
+   The Contractor shall not subcontract or assign any portion of the food service operation
+   or its rights or obligations under the contract without prior written consent of Chesterfield
+   County.
+
+
+
+
+                                                                                               4
+10. Discontinuance of Operation
+
+   Should it be necessary for Chesterfield County to discontinue operation of the institution
+   for any reason, this contract shall become null and void.
+
+11. Emergency conditions
+
+   If the Chesterfield County Detention Center kitchen should be damaged by fire, flood,
+   riot, or any event that would render the kitchen inoperable, Chesterfield County shall
+   determine, after consultation with the Contractor, whether and to what extent the kitchen
+   is operable. If the Contractor cannot then prepare and serve the required meals,
+   Chesterfield County, at its option, may continue with the contract or terminate without
+   further obligation.
+
+   The bidder must include in the proposal a detailed description of the bidder’s emergency
+   plan for providing alternate food service in case of an emergency such as mentioned
+   above.
+
+B. STAFFING
+
+1. Food Service Manager
+
+   The Contractor shall provide a trained food service manager with at least twelve (12)
+   months experience in institutional Food Service Management or similar experience in
+   correctional facilities, which will work with the administration of the Chesterfield County
+   Detention Center. The Contractor shall provide the contracting officer with the
+   prospective managers resume and qualifications. Employment of the manager and all
+   other employees of the Contractor at the facility will be subject to review and approval by
+   the Detention Center Administrator. The Detention Center Administrator reserves the
+   right to require the Contractor to remove any employee of the Contractor from the facility
+   at the Administrator’s discretion.
+
+2. Nutrition Consultant
+
+   Contractor shall provide a full-time qualified nutrition consultant, who is at minimum, a
+   certified dietician licensed by the State of South Carolina, on its staff for consultation and
+   review of menus. Chesterfield County also reserves the right to consult with another
+   dietician for review of menus and nutritional information.
+
+3. Staffing
+
+   Contractor shall provide sufficient staff at all times to provide for the efficient operation
+   of food service. Chesterfield County shall provide a minimum of one (1) to two (2)
+   inmates for assistance with sanitation and dishwashing. However, should inmate labor
+   not be available, the Contractor shall ensure that sufficient employees are present to
+   provide all such services.
+
+
+
+
+                                                                                                   5
+4. Minimum Wage
+
+   The Contractor must pay minimum wage as defined by the State of South Carolina, or
+   higher wages. Inmates ARE NOT paid.
+
+5. Background Investigations
+
+   Contractor’s employees will be subject to a background investigation and security check
+   as is normally required for personnel of Chesterfield County Detention Center.
+   Chesterfield County reserves the right to deny any Contractor’s employees access to the
+   facility that do not meet established security clearances or obey Chesterfield County rules
+   and regulations. Final selection of all Contractor employees at the Detention Center shall
+   be at the approval of the Detention Center Administrator.
+
+6. Physical Examinations
+
+   All employees shall be required to undergo periodic physical exams as specified by the
+   State and local regulations at the Contractor’s expense.
+
+7. Orientation and Training
+
+   The Contractor’s employees must attend orientation classes and in-service training as
+   mandated by Chesterfield County and the State of South Carolina. Such training will be
+   provided by Chesterfield County, but employees’ salaries for that time is the
+   responsibility of the Contractor.
+
+8. Conduct of Contractor’s Employees
+
+   The Contractor shall instruct all employees that all rules and regulations, policies and
+   procedures established by Chesterfield County shall be adhered to. In addition:
+       • Contractor shall prohibit its employees from personal use of the telephone or
+          office equipment provided for official Chesterfield County business. No cell
+          phones are allowed inside the facility.
+       • All Contract personnel shall be required to comply with Chesterfield County and
+          the State of South Carolina rules and regulations concerning food service.
+       • All Contractor personnel may be required to wear identification badges issued by
+          Chesterfield County.
+       • No food, supplies, material or equipment provided, acquired or utilized in the
+          performance of the contract shall be removed from the corrections facility for
+          personal use or used in any manner not provided herein without approval form
+          Chesterfield County.
+       • Contractor’s employees shall not fraternize with inmates or Chesterfield County
+          employees.
+
+9. Supervision of Inmate Workers
+
+   The Contractor shall provide sufficient qualified staff to supervise, at all times, any
+   inmates assigned to the food service area while performing their job assignment,
+   including, but not limited to, staging of trays, receiving materials and sanitation. The
+   Contractor shall be responsible for documenting on specified forms and notifying
+   security personnel of rule violations by inmates working in the food service section of the
+   facility. Chesterfield County shall be responsible for taking the necessary steps for
+   disciplinary action, where appropriate. Contractor shall have the right to request that the
+
+
+                                                                                            6
+   Chesterfield County Detention Center Administrator remove inmate staff from
+   assignment to the food service area.
+
+
+
+10. Staffing Proposal Requirements
+
+   The Contractor shall provide with its proposal:
+      a. Individual job descriptions and levels of responsibility.
+      b. State the number of personnel required.
+
+11. Contract Supervision
+
+   Chesterfield County shall appoint a person from its staff to oversee the contract. This
+   person shall randomly check for contract compliance. The Contractor shall cooperate
+   with this person in obtaining all requested information.
+
+C. FOOD &amp; SPECIFICATIONS
+
+   1. All food shall be provided by the Contractor and prepared on-site. Contractor
+      will prepare at least two (2) hot meals a day, breakfast and dinner.
+      Raw Food:
+
+       The following are the minimum specifications for raw food; higher but not lower
+       grades can be purchased. Contractor will use commodities as much as possible.
+       a. Beef, Veal, and Lamb shall be of at least USDA Choice.
+       b. Ground Beef-utility or better, not to exceed 25% fat.
+       c. Poultry shall be of at least USDA Grade A.
+       d. Canned fruits and vegetables shall be of at least USDA Grade C.
+       e. Frozen fruits and vegetables shall be of at least USDA Grade B.
+       f. Fresh produce shall be of at least USDA No. 2.
+       g. Dairy products shall be of at least USDA Grade A.
+       h. Eggs shall be of at least USDA Grade A Medium.
+       i. Frozen fish and seafood must be a nationally distributed brand, packed under
+           continuous government inspection, USDA Grade A.
+
+   2. Commodities
+
+       Contractor agrees to assist Chesterfield County in securing surplus food items when
+       minimum quality standards are satisfied and when costs of a given surplus item are
+       less than that available to the Contractor. If surplus food is used, the Contractor
+       agrees to fully utilize all appropriate surplus food commodities obtained by
+       Chesterfield County from the US Department of Agriculture. Commodities should
+       not be used in calculating meal prices. The difference between the cost of the
+       commodities received for each month and current market cost for such commodities
+       shall be applied as a credit and applied to the next invoice to Chesterfield County.
+       Contractor shall follow all record keeping requirements of the USDA for purchasing
+       surplus food.
+
+   3. Donated Items by the County
+
+       Chesterfield County may periodically donate food items. The current market cost for
+       donated items shall be applied as a credit and applied to the next invoice to
+
+
+                                                                                              7
+   Chesterfield County. Contractor shall give Detention Center Administrator a copy of
+   the credit for approval.
+
+
+
+
+4. Meal Standards
+
+   All meals shall meet current RDA requirements. Menus shall provide an average of
+   2,900 calories per day. Food will be served fresh, in a reasonable variety and at
+   appropriate temperatures. Breakfast and Dinner at least are requested to be hot meals;
+   lunch may be a cold meal. Portion sizes shall be specified on the proposed menus as
+   serving (cooked) weight unless otherwise specified.
+
+5. Food Inventory
+
+   Contractor shall be responsible for purchasing and receiving all food necessary for
+   preparation of each meal in sufficient quantity to meet the needs of inmates during
+   the period of the contact. The Contractor must maintain, at a minimum, a five (5)-day
+   supply of foodstuffs on hand. All inventories shall be rotated regularly and the
+   Contractor shall ensure that the food items are not served after the manufacturer’s
+   expiration date. Contractor shall retain ownership of such inventory.
+
+6. Meal Counts
+
+   The Chesterfield County Detention Center will order inmate meals, special diet meals
+   and sack meals at times mutually agreeable to the Detention Center Administrator
+   and the Contractor. However, the Contractor shall prepare sufficient additional meals
+   in the event of newly arrived inmates.
+
+7. Pre-plating
+
+   Meals shall be portioned on trays in the kitchen and placed in a cart in the staging
+   area. Detention staff will deliver the carts with trays and beverages to the housing
+   units
+
+8. Meal Schedule
+
+   Contractor shall provide three full, nutritionally balanced meals each day at the
+   regularly scheduled times as follows:
+
+   Breakfast (hot meal) Start: 6:00 AM           End: 7:00 AM
+   Lunch                Start: 11:00 AM          End: 12:00 PM
+   Dinner (hot meal) Start: 4:00 PM              End: 5:00 PM
+
+   Meals for inmates returning late from court or late “book-ins” will be provided until
+   12:00 PM for lunch and 5:00 PM for dinner. These times may be changed at the
+   discretion of the Detention Center Administrator.
+
+
+9. Sack Meals
+
+   Contractor shall provide box lunches as needed. Sack lunches can be ordered for
+   inmates that cannot eat during regular meal times anytime the kitchen is open. Sack
+
+                                                                                           8
+     lunches will consist of, at minimum, two sandwiches, 1 piece of fruit, chips or similar
+     item, dessert and a beverage. Contractor shall vary sack meal items to avoid
+     repetition. Contractor shall submit a sample one-week sack meal menu with the
+     proposal.
+
+
+  10. Menu Cycle
+
+     The menu cycle will be four (4) weeks minimum and will be submitted for
+     Chesterfield County’s approval at least 30 days in advance. Contractor shall submit,
+     as part of its proposal, the proposed menu cycles to be served. The contracting officer
+     reserves the right to request that the order of the menu be rearranged and that like or
+     similar items be substituted if the need shall arise or if commodity is available.
+
+  11. Recipes
+
+     Where combination foods are on the menu, the Contractor shall have a file containing
+     the recipe that provides the list of ingredients and their quantities; also, the number of
+     servings and the size of each serving. Recipes for the menus shall be maintained on-
+     site.
+
+  12. Substitution
+
+     Any substitution to the established menus shall be verified in advance with a dietician
+     to determine the appropriateness of those substitutions and approved by the
+     Chesterfield County Detention Center Administrator.
+
+  13. Special Diets
+
+     The Contractor shall provide special medical, religious, and vegetarian diets at no
+     additional charge. Snacks are to be included in the price per meal. A dietician shall
+     review the contents of such meals to ensure their proper nutritional balance. The
+     average number of diets being served is 10 per meal.
+
+  14. Records
+
+     The Contractor shall keep a permanent record of the number of meals served, the
+     food content of each meal and any menu substitutions or modifications, with copies
+     provided to the contracting officer. Records of substitutions shall include the items
+     and portion sizes, the reason for the substitution and verification that a dietician has
+     been consulted when appropriate. The Contractor shall maintain and provide such
+     daily, weekly, and monthly records as the contracting officer may require and shall
+     maintain records for a minimum of three years.
+
+  15. Holiday/Spirit Lifter Meals
+
+     The contractor is expected to provide, at no additional charge, a minimum of three
+     (3) Holiday/Spirit Lifter Meals annually. A copy of the proposed menus is to be
+     included in the Proposal.
+
+D. OPERATIONS
+
+  1. Average Daily Population
+
+
+                                                                                                9
+   Average daily population is expected to be approximately 130 inmates on a daily
+   basis. The average daily population can average 120 - 140 per meal.
+
+
+2. Equipment
+
+   The Contractor and its employees must safeguard all property of Chesterfield
+   County. The Contractor shall allow employees to use Chesterfield County equipment
+   only after they have been trained in its proper use. The Contractor shall be held
+   responsible for damage resulting from negligence or carelessness on the part of its
+   employees. The Contractor shall notify the Contracting Officer immediately of the
+   need for equipment repair and maintenance. Chesterfield County will maintain all
+   owned equipment.
+
+3. Keys
+
+   The Contractor is responsible for control of keys obtained from Chesterfield County
+   and the security of those areas for which the keys are given. The Contractor shall be
+   responsible for immediately reporting all facts relating to any loss of keys or losses
+   incurred as a result of break-ins to those areas. No keys to any part of the facility may
+   be duplicated. All keys will be provided by Chesterfield County and made available
+   at the beginning of the shift and turned in at the end of the shift. No keys shall leave
+   the facility.
+
+4. Contractor Expenses
+
+   The Contractor shall be responsible for all labor related costs, food costs and other
+   expenses such as cleaning supplies, paper supplies, laundry and uniforms for
+   Contractor employees, insurance premiums and license fees, long distance expenses,
+   office supplies and postage.
+
+5. Knife Security
+
+   The Contractor agrees that all knives and kitchen utensils shall be counted and locked
+   for safe keeping in accordance with policy and procedures provided to the Contractor
+   by Chesterfield County. Also, the utensils will require to be inventoried three (3)
+   times daily.
+
+6. Sanitation
+
+   The Contractor shall perform regular routine cleaning of the kitchen area including
+   all equipment and fixtures therein sufficient to continuously maintain such area. The
+   equipment and fixtures shall be maintained in a clean, sanitary condition as specified
+   by the Health Department, Department of Corrections, and other applicable federal
+   and state laws.
+
+
+
+7. Inspections
+
+   The Contractor shall agree to allow unscheduled visits by the contracting officer or
+   his designee, by the Health Department, by the DOC or ACA inspectors and by any
+   other inspecting agency whose purpose is to ensure that all employees in the food
+   service area complies with all requirements for sanitation, and food storage.
+
+                                                                                         10
+    8. Termination of Contract
+
+        Upon termination of the contract:
+           a. The inventories of food and expendable supplies of the Contractor shall
+               remain those of the Contractor unless purchased by a new Contractor or by
+               Chesterfield County. Final payments to be made to the Contractor by
+               Chesterfield County shall be withheld until all transactions or arrangements
+               for these inventory purchases or removal have been completed to the
+               satisfaction of Chesterfield County.
+           b. Chesterfield County and the Contractor shall conduct a physical inventory of
+               all non-expendable supplies and equipment. At that time, the Contractor shall
+               turn over to Chesterfield County an account for all equipment and other
+               property belonging to the County.
+           c. The Contractor shall make available to Chesterfield County, for examination,
+               all data, records and reports concerning the food service program and shall
+               make available to the County copies of them, upon request, at no expense to
+               Chesterfield County.
+
+
+E. CHESTERFIELD COUNTY DETENTION CENTER RESPONSIBLITIES
+
+    1. Provide, install, maintain, repair and replace, if necessary, and permit the Contractor
+       to use all food service equipment and fixtures.
+    2. Provide all utilities such as trash removal, pest control, office space including desk,
+       chair, filing cabinet and telephone; and inmate uniforms. Chesterfield County will not
+       provide long distance.
+    3. Provide laundry services for all aprons, towels, dishcloths, etc. used in the food
+       service operations, except for Contractor’s employees’ uniforms. The Contractor
+       shall be responsible for ensuring its staff’s uniforms are clean and in good repair.
+    4. Provide I.D. badges for all Contractor employees.
+    5. Provide timely orders for meals.
+    6. Provide a sufficient supply of departmental forms to be used in food service.
+
+F. BILLING
+
+    Contractor Compensation
+
+1. As full and complete compensation to the Contractor for food, labor and material
+   furnished and all services performed pursuant to these specifications, Chesterfield County
+   shall pay the Contractor upon submission of properly certified invoices prepared in a
+   format required by Chesterfield County. Compensation shall be based on the applicable
+   daily, per meal costs expressed in the awarded bid proposal multiplied by the number of
+   meals ordered or actually served each day, whichever is higher, less any credit due from
+   previous invoices.
+
+
+
+                                  END OF SECTION
+
+
+
+
+                                                                                           11
+CONDITIONS
+
+Contractor Qualifications and References
+
+The Contractor shall provide with its bid:
+
+    a. Outlines of the structure of the organization and length of company existence.
+
+    b. One copy of the latest published annual report for the company or satisfactory written
+       evidence of the financial stability of the organization.
+
+    c. A list of all current food services contracts with the following information: client, contact
+       person, address and telephone number, type and size of the facility, type of food service
+       operation, date of original contract. Also, please include information as to the facility that
+       is most similar to the Chesterfield County Center in size and population and the facility
+       that is geographically closest to the Chesterfield County Center. See attachment.
+
+    d. A list of any correctional and/or food service affiliations.
+
+
+
+
+                                        END OF SECTION
+
+
+
+
+SCHEDULE OF AWARD of CONTRACT
+
+The County reserves the right to select a vendor who, in the County’s opinion, provides the most
+advantageous solution for the County and whose response to this “Request for Proposal” best
+demonstrates adherence to and ability to meet the above minimum requirements.
+
+The County reserves the right to interview all or any of the responding vendors to this RFP.
+
+Contractors who submit proposals shall be responsible for all cost related to the preparation of
+such proposals.
+
+The County anticipates that it will award the contract to the vendor selected in a timely manner.
+
+All Contractors shall be notified in writing of the selection decision.
+
+
+                                        END OF SECTION
+
+
+
+
+                                                                                                  12
+SUBMISSION PROCEDURES AND REQUIREMENTS
+
+Contractors shall submit an original of their proposal. All proposals must be valid for sixty (60)
+days after the proposal date. Confidential information which contractors consider being exempt
+from disclosure should be marked as propriety. The County reserves the right to determine which
+information is propriety.
+
+        A. The proposal submission must be received no later than 12:00 Noon, Monday,
+           September 21, 2026. Any proposal received after the date and time stipulated will
+           be rejected and returned unopened.
+        B. The proposal submission must be clearly marked as – 03-26/27 Inmate Food
+           Service Proposal and must be delivered to the address below in sufficient time to
+           ensure receipt by the Owner’s representative on or before the time and date specified
+           above:
+
+                 Heather Felts
+                 County Council Office
+                 Chesterfield County Administration Bldg
+                 178 Mill Street
+                 Chesterfield, South Carolina, 29709
+
+
+
+
+        Contractor assumes full responsibility for the timely delivery of the package to the
+        Owner’s representative.
+
+        C. For good and sufficient reason, Chesterfield County may extend the date and/or time
+           of the Proposal deadline.
+
+
+
+
+                                      END OF SECTION
+
+
+
+
+                                                                                               13
+                                      PROPOSAL FORM
+Proposal Submitted to: Chesterfield County, South Carolina
+
+Project Name: Inmate Food Service Proposal
+
+Contractor:
+
+Address:
+
+
+
+
+Phone and Fax Number:
+
+E-Mail Address:
+
+Federal Identification No.:
+
+BID PRICE PER MEAL (BASED ON 130 INMATES PER MEAL):
+
+                BREAKFAST (hot meal) $_______________________
+
+                LUNCH                    $_______________________
+
+                DINNER (hot meal)        $_______________________
+
+                DAILY TOTAL              $____________________
+
+The Contractor hereby certifies that Proposal as submitted herein will remain valid for a period of
+not less than sixty (60) days from due date of this Proposal submission.
+The Contractor also understands the Owner assumes no responsibility or obligation to the
+Vendor, and will make no payment for any costs associated with the preparation or submission of
+this Proposal.
+Non-Collusion Statement: The undersigned states the company has not, either directly or
+indirectly, entered into any agreement, participated in any collusion or otherwise taken any action
+in restraint of free competitive pricing in connection with the Proposal. No person(s) associated
+with the company is any employee of the Owner. No existing agreements with the Owner create
+a Conflict of Interest in the submission of the Proposal.
+The Contractor hereby guarantees by signature that he/she is legally authorized to make such
+declarations and responses on behalf of the corporation or partnership as listed below.
+
+                                                 Respectfully submitted:
+
+By:
+              (Signature)
+
+
+Title:                                                                Corporate Seal (if applicable)
+              (Typed)
+
+Contractor:                                             Attest:
+
+
+                                                                                                  14
+</pre><span class="src s-classa" data-src="rfp" data-class="A" title="CCRFPINMATEFOODSERVICESept42026.pdf">RFP 03-26/27, inmate food service (Sept 4, 2026)</span></div></details></section><section id="auditor" class="part"><div class="part-head"><span class="eyebrow">Who checks the books</span><h2>One firm, every audit</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">The FY2026-27 ordinance names the auditor for the next audit: <q class="rq">Schwartz, Halliday and Company, P.O. Box 18427, Spartanburg</q>. <span class="src s-classa" data-src="bud2627" data-class="A" title="cc2026-2027budget.pdf">Ordinance 26-27-01, FY2026-27 budget</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">One firm signed every audit of the decade: McAbee, Schwartz, Halliday & Co. for FY2016–FY2019, renamed Halliday, Schwartz & Co. from FY2020. <span class="src s-classa" data-src="auditors" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">Auditor of record, FY2016–FY2025 (from each audit’s opinion page)</span></p><details class="more"><summary>What the auditor found, year by year</summary><div class="more-body"><p class="rec">FY2021, Note 15: <q class="rq">A decrease in the Treasurer’s Office cash of $279,361 was to reflect</q> <q class="rq">a cumulative adjustment to cash due to errors in the bank reconciliations.</q> A note, not a finding. <span class="src s-classa" data-src="aud2021" data-class="A" title="CC_AUDIT_2021.pdf">FY2021 audit, Note 15 – Prior Period Adjustment</span></p><p class="rec">FY2023, the county’s first Single Audit, Financial Statement Findings: <q class="rq">None</q>. <span class="src s-classa" data-src="sa2023" data-class="A" title="CC_AUDIT_2023(SingleAudit).pdf">FY2023 Single Audit, Summary of Auditor’s Results, p. 10</span></p><p class="rec">FY2024, Finding 2024-001: <q class="rq">The County Treasurer&#x27;s Office did not complete all its bank reconciliations on a monthly basis</q>. <q class="rq">This is not a repeat finding.</q> No dollar figure. <span class="src s-classa" data-src="sa2024" data-class="A" title="CC_AUDIT_2024(SingleAudit).pdf">FY2024 Single Audit, Schedule of Findings, Finding 2024-001</span></p><p class="rec">FY2025, Finding 2025-001: the <b class="dv" data-v="tax_total">$15.7 million</b>, and <q class="rq">This is a repeat finding of 2024-001.</q> <span class="src s-classa" data-src="sa2025" data-class="A" title="CC_AUDIT_2025(SingleAudit).pdf">FY2025 Single Audit, Schedule of Findings, Finding 2025-001</span></p></div></details></div></div></section><section id="shelter" class="part"><div class="part-head"><span class="eyebrow">The animal shelter</span><h2>Below the stated budget in seven of eleven years</h2></div><div class="cols"><div class="camp"><div class="lab">What the county says</div><p class="rec">County Administrator Tim Eubanks, 2020: <q class="rq">The annual budget for Chesterfield County Animal Services is over $460,000 and the current facility was built in 2016 at a cost of $1,000,000.</q> <span class="src s-classb" data-src="wbtv2020" data-class="B"><a href="https://www.wbtv.com/2020/09/15/chesterfield-county-administrator-addresses-rumors-surrounding-animal-services">WBTV, Sept 15, 2020: administrator addresses rumors surrounding animal services</a> · read 2026-10-06</span></p></div><div class="recd"><div class="lab">What the county’s own documents show</div><p class="rec">In FY2020-21, the year of the statement, the adopted animal shelter line was <b class="dv" data-v="an_fy2021">$460,689</b>. Across the <b class="dv" data-v="n_budgets">11</b> budgets it was below <b class="dv" data-v="eub460">$460,000</b> in <b class="dv" data-v="an_below_460">7</b>. <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></p><div class="tblwrap" data-tsrc="budgets rep10"><table class="nums"><thead><tr><th>Budget</th><th>FY2016-17</th><th>FY2017-18</th><th>FY2018-19</th><th>FY2019-20</th><th>FY2020-21</th><th>FY2021-22</th><th>FY2022-23</th><th>FY2023-24</th><th>FY2024-25</th><th>FY2025-26</th><th>FY2026-27</th></tr></thead><tbody><tr><td>Animal shelter</td><td><b class="dv" data-v="an_fy1617">$442,707</b></td><td><b class="dv" data-v="an_fy1718">$410,546</b></td><td><b class="dv" data-v="an_fy1819">$440,048</b></td><td><b class="dv" data-v="an_fy1920">$461,271</b></td><td><b class="dv" data-v="an_fy2021">$460,689</b></td><td><b class="dv" data-v="an_fy2122">$408,333</b></td><td><b class="dv" data-v="an_fy2223">$429,047</b></td><td><b class="dv" data-v="an_fy2324">$456,157</b></td><td><b class="dv" data-v="an_fy2425">$474,900</b></td><td><b class="dv" data-v="an_fy2526">$444,982</b></td><td><b class="dv" data-v="an_fy2627">$487,732</b></td></tr><tr><td>Vet expense</td><td><b class="dv" data-v="vet_fy1617">$50,000</b></td><td><b class="dv" data-v="vet_fy1718">$20,000</b></td><td><b class="dv" data-v="vet_fy1819">$18,000</b></td><td><b class="dv" data-v="vet_fy1920">$12,000</b></td><td><b class="dv" data-v="vet_fy2021">$12,000</b></td><td><b class="dv" data-v="vet_fy2122">$24,000</b></td><td><b class="dv" data-v="vet_fy2223">$24,000</b></td><td><b class="dv" data-v="vet_fy2324">$24,000</b></td><td><b class="dv" data-v="vet_fy2425">$24,000</b></td><td><b class="dv" data-v="vet_fy2526">$24,000</b></td><td><b class="dv" data-v="vet_fy2627">$23,000</b></td></tr><tr><td>Spay/neuter</td><td><b class="dv" data-v="spay_fy1617">$15,000</b></td><td><b class="dv" data-v="spay_fy1718">$10,000</b></td><td><b class="dv" data-v="spay_fy1819">$15,000</b></td><td><b class="dv" data-v="spay_fy1920">$15,000</b></td><td><b class="dv" data-v="spay_fy2021">$15,000</b></td><td><b class="dv" data-v="spay_fy2122">$15,000</b></td><td><b class="dv" data-v="spay_fy2223">$15,000</b></td><td><b class="dv" data-v="spay_fy2324">$15,000</b></td><td><b class="dv" data-v="spay_fy2425">$15,000</b></td><td><b class="dv" data-v="spay_fy2526">$15,000</b></td><td><b class="dv" data-v="spay_fy2627">$15,000</b></td></tr></tbody></table><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep10" data-class="A" title="CC_BUDGET_AUDIT_DECADE_FORENSIC_REVIEW_October6_2026.md">Decade budget-to-audit review, Oct 6, 2026</span></div><p class="rec">The shelter spent past its final budget in <b class="dv" data-v="ov_n_Animal shelter / services">8</b> of <b class="dv" data-v="ov_of_Animal shelter / services">10</b> audited years, and past its original budget in each of FY2023 (<b class="dv" data-v="an_overorig_2023">$48,458</b>), FY2024 (<b class="dv" data-v="an_overorig_2024">$46,329</b>) and FY2025 (<b class="dv" data-v="an_overorig_2025">$16,679</b>). Animal revenues budgeted: <b class="dv" data-v="anrev_fy2223">$77,000</b> in FY2022-23, <b class="dv" data-v="anrev_fy2627">$47,500</b> in FY2026-27. <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span><span class="src s-classa" data-src="rep3" data-class="A" title="CC_BUDGET_THREE_YEAR_ANALYSIS_October6_2026.md">Five-year budget analysis, Oct 6, 2026</span></p><p class="rec">2011: <q class="rq">Tests on six dogs later confirmed they&#x27;d been shot in the head and buried there. Plowden said a total of 10 dogs were shot and dumped in a non-permitted landfill near the shelter.</q> The Attorney General’s office <q class="rq">did not find enough evidence to show any criminal intent in the shootings of dogs outside the shelter.</q> <q class="rq">A consent order from the attorney general&#x27;s office now must be signed by Sheriff Parker and the Chesterfield County Council.</q> <span class="src s-classb" data-src="wsoc2011" data-class="B"><a href="https://wsoctv.com/news/chesterfield-animal-control-officers-wont-face-cha/223135124">WSOC-TV, 2011: animal control officers won’t face charges</a> · read 2026-10-06</span></p><p class="rec">2014: <q class="rq">Parker was convicted on five counts of misconduct in office, two counts of furnishing contraband to inmates, and one count of embezzlement.</q> <span class="src s-classb" data-src="parker" data-class="B"><a href="https://www.wccbcharlotte.com/?p=29285">WCCB, April 19, 2014: Parker convicted</a> · read 2026-10-04</span></p><p class="rec">2026: a former deputy <q class="rq">is charged with eight counts of animal fighting, ill treatment to animals, and criminal conspiracy.</q> In the federal case, a co-defendant <q class="rq">was allegedly found with approximately 77 dogs during a June search, marking what authorities described as the largest single-property dog seizure in South Carolina history.</q> <span class="src s-classb" data-src="wccb2026" data-class="B"><a href="https://www.wccbcharlotte.com/?p=4683547">WCCB, 2026: ex-deputy charged with eight counts</a> · read 2026-10-06</span><span class="src s-classb" data-src="fms2026" data-class="B"><a href="https://www.fortmillsun.com/2026/09/04/77-dogs-seized-from-chesterfield-county-property-in-largest-single-property-dog-seizure-in-sc-history/">Fort Mill Sun, Sept 4, 2026: 77 dogs seized</a> · read 2026-10-06</span></p></div></div></section><section id="ask" class="part"><div class="part-head"><span class="eyebrow">What the population is being asked to trust</span><h2>Up to fifty million dollars in bonds</h2></div>
+<div class="closing">
+<p>The ballot asks for authority to borrow up to <b class="dv" data-v="ballot_bonds">$50,000,000</b>, repaid from a sales tax and, if that falls short, from property tax. <span class="src s-classa" data-src="ballot" data-class="A" title="county resolution, form of ballot">Form of ballot, Nov 3, 2026 referendum</span></p>
+<p>It goes to a council whose departments spent past their final budgets in the same places for a decade, with no overrun discussion in the <b class="dv" data-v="n_minutes">46</b> sets of its 2025–2026 minutes on the record <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span><span class="src s-classa" data-src="minutes" data-class="A" title="bbbea3_*.pdf">County Council and committee minutes, 2025–2026 (46 sets)</span>; to a Treasurer’s Office whose reconciliation failure the auditor reported in FY2024 and again in FY2025, the second time at <b class="dv" data-v="tax_total">$15.7 million</b>, while Council voted for a forensic audit and wrote to the Governor <span class="src s-classa" data-src="sa2025" data-class="A" title="CC_AUDIT_2025(SingleAudit).pdf">FY2025 Single Audit, Schedule of Findings, Finding 2025-001</span><span class="src s-classa" data-src="m1119" data-class="A" title="bbbea3_893ceecf2b3c4f2aaefa75ab38e5b00c.pdf">Finance Committee minutes, Nov 19, 2025</span><span class="src s-classa" data-src="m0105" data-class="A" title="bbbea3_d796889887034601901fe2b64d807e56.pdf">County Council minutes, Jan 5, 2026</span>; to a General Fund whose balance fell from <b class="dv" data-v="fb_peak">$2,829,883</b> to <b class="dv" data-v="fb_2025">$896,498</b> in three years while revenue beat the budget <span class="src s-classa" data-src="audits" data-class="A" title="CC_AUDIT_2016.pdf … CC_AUDIT_2025.pdf">County audits FY2016–FY2025, Schedule 1 (budgetary comparison, General Fund)</span>; under budget documents whose summary pages disagree with their own line items <span class="src s-classa" data-src="bud1819" data-class="A" title="CC_BUDGET_2018-2019.pdf">FY2018-19 budget, PDF pp. 16–17 (two summary pages)</span><span class="src s-classa" data-src="bud2526" data-class="A" title="CC2025-2026budget.pdf">FY2025-26 budget, PDF pp. 19–20 and 28</span>; and to a library line that has funded children’s programming at <b class="dv" data-v="child_fy2627">$2,500</b> a year, <b class="dv" data-v="per_resident">$0.058</b> a resident <span class="src s-classa" data-src="budgets" data-class="A" title="CC_BUDGET_2016-2017.pdf … cc2026-2027budget.pdf">Adopted budget ordinances FY2016-17 – FY2026-27 (11 documents, OCR)</span>.</p>
+<p>The buildings get built. What happens inside them is the record this page documents.</p>
+<p class="sigline">Shaun Leviner<br>Ezekiel 34:10</p></div></section></main>
+<footer>Public-interest document. Not affiliated with any campaign, candidate, or party. Published in the exercise of rights of speech and press under the First Amendment and Article I of the South Carolina Constitution.
+<div class="ror"><b>Reservation of Rights</b><span>RESERVATION OF RIGHTS
+
+All rights are reserved without prejudice — constitutional, statutory, and common law — including but not limited to rights under 42 U.S.C. §1983 and any other applicable federal or state law. Nothing in this document constitutes a waiver of any right, claim, or remedy. UCC 1-308.</span></div>
+<div class="companions"><span>The seven pages:</span><a href="https://sha-levi.github.io/extraction-with-no-end/">Extraction With No End</a><a href="https://sha-levi.github.io/eye-spy-with-my-little-i/">Eye Spy With My Little I</a><a href="https://sha-levi.github.io/the-penny-tax/">The Penny Tax</a><a href="https://sha-levi.github.io/the-school-districts-money/">The School District’s Money</a><a href="https://sha-levi.github.io/know-your-representatives/">Know Your Representatives</a><a href="https://sha-levi.github.io/the-financial-record/">The Financial Record</a><a href="https://sha-levi.github.io/sheriffs-office/">The Oath and the Office</a></div>
+<div class="sig">IAMINMYFATHERASHEINME<br>Glory to Elohim YHWH<br>Via Lucis Christi<br>Ezekiel 34:10</div></footer>
+</div></body></html>
