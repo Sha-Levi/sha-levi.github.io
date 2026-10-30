@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Arrangement</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f5f0;
+  --surface: #edeae3;
+  --ink: #1a1a1a;
+  --ink-mid: #3a3a3a;
+  --ink-light: #6a6a6a;
+  --rule: #c4bfb4;
+  --accent: #8b2500;
+  --accent-light: #a63a14;
+  --col-left: #2c2416;
+  --col-left-ink: #e8ddc8;
+  --col-right: #1a1c2c;
+  --col-right-ink: #ddd8c8;
+  --serif: 'EB Garamond', 'Georgia', serif;
+  --sans: 'Inter', system-ui, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111111; --surface: #1a1a1a; --ink: #e0ddd5; --ink-mid: #b8b4aa;
+    --ink-light: #8a8680; --rule: #3a3830; --accent: #c45a30; --accent-light: #d47040;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111111; --surface: #1a1a1a; --ink: #e0ddd5; --ink-mid: #b8b4aa;
+  --ink-light: #8a8680; --rule: #3a3830; --accent: #c45a30; --accent-light: #d47040;
+}
+*, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--serif);
+  font-size: 19px; line-height: 1.7; max-width: 100%; overflow-x: hidden;
+}
+.container { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+h1 {
+  font-family: var(--serif); font-size: 2.4rem; font-weight: 400;
+  letter-spacing: -0.01em; line-height: 1.15; margin-bottom: 0.3rem;
+}
+.subtitle {
+  font-family: var(--sans); font-size: 0.8rem; font-weight: 500;
+  color: var(--ink-light); letter-spacing: 0.03em; margin-bottom: 3rem;
+}
+h2 {
+  font-family: var(--serif); font-size: 1.5rem; font-weight: 400;
+  color: var(--ink); margin: 3rem 0 1.2rem; padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+p { margin-bottom: 1.2rem; color: var(--ink-mid); max-width: 65ch; }
+p.lead { font-size: 1.15rem; color: var(--ink); line-height: 1.75; }
+.scripture {
+  background: var(--surface); border-left: 3px solid var(--accent);
+  padding: 1.2rem 1.5rem; margin: 2rem 0; font-style: italic;
+  color: var(--ink-mid); font-size: 1.05rem; line-height: 1.7;
+}
+.scripture cite {
+  display: block; margin-top: 0.6rem; font-style: normal;
+  font-family: var(--sans); font-size: 0.78rem; color: var(--ink-light);
+}
+.mirror-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  margin: 2rem 0; border-radius: 4px; overflow: hidden;
+  font-family: var(--sans); font-size: 0.88rem; line-height: 1.55;
+}
+.mirror-col-left { background: var(--col-left); color: var(--col-left-ink); padding: 1.5rem; }
+.mirror-col-right { background: var(--col-right); color: var(--col-right-ink); padding: 1.5rem; }
+.mirror-col-left h3, .mirror-col-right h3 {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+  margin-bottom: 1.2rem; padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+.mirror-row { margin-bottom: 1rem; }
+.mirror-role { font-weight: 600; font-size: 0.82rem; display: block; margin-bottom: 0.15rem; }
+.mirror-desc { font-size: 0.82rem; opacity: 0.8; line-height: 1.5; }
+.reg-list {
+  margin: 1.5rem 0; padding: 0; list-style: none;
+  font-family: var(--sans); font-size: 0.88rem; color: var(--ink-mid);
+}
+.reg-list li {
+  padding: 0.5rem 0; border-bottom: 1px solid var(--rule);
+  display: flex; justify-content: space-between; gap: 1rem;
+}
+.reg-list li:last-child { border-bottom: none; }
+.reg-event { flex: 1; }
+.reg-req { flex: 1; text-align: right; color: var(--ink-light); font-size: 0.82rem; }
+.sig {
+  margin-top: 3rem; font-family: var(--sans); font-size: 0.78rem;
+  color: var(--ink-light); letter-spacing: 0.02em;
+}
+@media (max-width: 600px) {
+  .container { padding: 2rem 1.2rem 3rem; }
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.25rem; }
+  body { font-size: 17px; }
+  .mirror-grid { grid-template-columns: 1fr; }
+  .mirror-col-right { border-top: 1px solid rgba(255,255,255,0.1); }
+  .reg-list li { flex-direction: column; gap: 0.2rem; }
+  .reg-req { text-align: left; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>The Arrangement</h1>
+<div class="subtitle">On the structure that governs, and the population that cannot see it</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 1: BEFORE — WHAT EXISTED UNDER THE JUDGES            -->
+<!-- ============================================================ -->
+
+<h2>Before the elders went to Ramah</h2>
+
+<p class="lead">Before there was a king, there was another way. It lasted roughly two hundred years. It was not perfect. It was not a kingdom. It was governance without a permanent governing class — and that is why it was replaced.</p>
+
+<p>Under the judges, Israel had no centralized authority. No hereditary ruler. No standing army. No taxation system. No permanent administrative seats. When a crisis arose, YHWH raised a judge — a leader whose authority was situational, temporary, and non-transferable. The judge served for the duration of the crisis and the authority did not pass to the judge's children by right. There was no throne to inherit. There was no office to hold. There was no land to grant to loyal officers because there were no officers.</p>
+
+<p>The elders — the heads of the tribal and clan structures — held local authority, but that authority was distributed, not centralized. No elder had jurisdiction over another tribe's territory. No elder appointed judges, collected national revenue, or maintained a military. Disputes were resolved locally. Labor was not conscripted. Fields were not seized and redistributed. The population kept what it produced.</p>
+
+<p>This was the system the elders looked at and found insufficient. Not because it failed the people. Because it failed the elders. Under the judges, the elders had no permanent institutional position. Their authority was local, informal, and dependent on the community's recognition — not on a royal appointment that could be passed to their sons.</p>
+
+<p>The surrounding nations — Egypt, Assyria, the Philistine city-states — operated differently. They had kings. Kings had courts. Courts had officers. Officers held permanent, hereditary positions granted by the crown. The elders looked at that model and saw what they lacked: guaranteed seats, centralized power, and a structure that would survive their own lifetimes and pass to their families.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 2: THE CHOICE — 1 SAMUEL 8                           -->
+<!-- ============================================================ -->
+
+<h2>What Samuel said, and who was listening</h2>
+
+<div class="scripture">
+Then all the elders of Israel gathered themselves together, and came to Samuel unto Ramah, and said unto him: Behold, thou art old, and thy sons walk not in thy ways. Now make us a king to judge us like all the nations.
+<cite>1 Samuel 8:4–5</cite>
+</div>
+
+<p class="lead">The elders came to Samuel. Not the people. Not the shepherds, the farmers, the laborers, the families working the land. The elders. The men who already held authority and wanted it made permanent.</p>
+
+<p>They gave two reasons. First — Samuel's sons were corrupt. They took bribes and perverted judgment. That was a legitimate grievance about judicial misconduct. Second — "make us a king to judge us like all the nations." That was the operative demand. They wanted the structure they had seen in the surrounding kingdoms — centralized, hereditary, permanent — because under that structure, the elders would become the king's officers. Their informal, local, non-guaranteed authority would convert into royally-appointed, inheritable, permanent positions.</p>
+
+<p>YHWH told Samuel what was happening. "They have not rejected you. They have rejected Me, that I should not reign over them." The existing system — distributed authority, no permanent administrative class, no hereditary rule — was not a political arrangement the elders were replacing with a better one. It was governance under YHWH that the elders were replacing with governance under a man. Because governance under YHWH gave the elders no permanent seats.</p>
+
+<p>Samuel was told to warn them. He did. In operational detail.</p>
+
+<div class="scripture">
+He will take your sons and appoint them for his chariots and his horsemen, and some shall run before his chariots. And he will appoint him captains over thousands, and captains over fifties, and will set them to ear his ground, and to reap his harvest, and to make his instruments of war, and instruments of his chariots. And he will take your daughters to be confectionaries, and to be cooks, and to be bakers. And he will take your fields, and your vineyards, and your oliveyards, even the best of them, and give them to his servants. And he will take the tenth of your seed, and of your vineyards, and give to his officers and to his servants. And he will take your menservants, and your maidservants, and your goodliest young men, and your asses, and put them to his work. He will take the tenth of your sheep: and ye shall be his servants.
+<cite>1 Samuel 8:11–17</cite>
+</div>
+
+<p>Read what the warning describes. It is not a list of abstract consequences. It is the operating manual of the feudal system, delivered three thousand years before the feudal system is supposed to have existed.</p>
+
+<p>Your sons — conscripted for the king's military. Your daughters — taken into the king's domestic service. Your fields, vineyards, olive groves — the best of them — seized and given to his servants. Not servants who clean the palace. Servants who govern on the king's behalf. Lords. Vassals. Officers. This is the administrative class the elders would become. A king takes the best land from the population and redistributes it to the men who administer the population for him. Loyalty is purchased with your property.</p>
+
+<p>A tenth of your seed. A tenth of your sheep. Given to his officers. That is taxation — the upward flow of the population's production to fund the administrative layer above. What funded the kingdom is what funds the county. Samuel described it in 1050 BC. It is on your property tax bill today.</p>
+
+<p>And the final line: "ye shall be his servants." Not some of you. All of you. Every person — reduced from free people governing themselves under distributed authority to servants of a king they did not request, administered by officers they did not appoint, taxed to fund an arrangement they did not design.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 3: THE INVERSION — WHO BEARS THE WEIGHT              -->
+<!-- ============================================================ -->
+
+<h2>Who chose, and who paid</h2>
+
+<p class="lead">Every church that teaches this passage says the people rejected God. Open the text. The people did not go to Ramah. The elders did.</p>
+
+<p>Verse 19 says "the people refused to obey the voice of Samuel." That verse is read in every pulpit as the people's disobedience — their faithless demand for a king over YHWH. But by verse 19, the decision was already made. The elders had petitioned. Samuel had warned. YHWH had consented. The population was presented with a settled matter and recorded as having ratified it.</p>
+
+<p>The elders chose. Everyone else bore the consequences. Sons were conscripted from the common families, not the elders' families. Fields were seized from the common holdings, not the elders' holdings. And the best land was given to the king's servants — which is what the elders became. Informal local authority converted into permanent royally-appointed seats. Their children inherited those seats. Their families held them across generations. Every cost of the arrangement fell on the population that had no voice in the decision. Every benefit accrued to the families that made it.</p>
+
+<p>And the institution that holds this text — the church — teaches the version that blames the population. "The people rejected God." That reading produces obedience. It tells the congregation: your condition is the result of your ancestors' faithlessness. Submit. Trust the arrangement. Do not examine who made the choice and who benefited.</p>
+
+<p>Land, tax exemption, institutional position — the church holds all of these within the arrangement. Governing families hold the deacon seats, the elder boards, the property committees. A reading that identifies the administrative class as the architects of the arrangement would implicate the institution delivering the lesson. That reading is not taught.</p>
+
+<p>So the weight stays on the people. The guilt is assigned downward. The benefit flows upward. Three thousand years of the same inversion, taught every Sunday morning, to a population that has never been shown the text plainly enough to ask: who actually went to Ramah?</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 4: THE ARCHITECTURE SAMUEL DESCRIBED                 -->
+<!-- ============================================================ -->
+
+<h2>Samuel described the operating system — it never stopped running</h2>
+
+<p>Every word Samuel spoke materialized. Under Saul, under David, under Solomon, and through every kingdom, empire, colonial administration, and county government that followed. The architecture he described was not a Hebrew phenomenon. It was the universal arrangement of centralized human governance. Wherever a king was installed, the same structure emerged — because the structure is what a king is.</p>
+
+<p>Lords held land by grant from the crown. Vassals held position by oath to the lord. Serfs held nothing — worked the land, produced the wealth, received subsistence, funded every layer above. Churches legitimated the arrangement as divine order. Courts adjudicated disputes within the arrangement on the arrangement's terms. Accountability flowed in one direction. Downward. A serf who failed to produce faced punishment. A lord who failed to protect faced nothing.</p>
+
+<p>The Carolina Charter of 1663 executed this architecture for what became South Carolina. King Charles II granted eight men — his chancellor, his military commander, his financial officer, his colonial governor, his Barbados planter — total ownership of the land, the water, the minerals, the churches, the courts, the law, and the power of life and death over the population within the territory. The charter calls them "true and absolute Lordes and Proprietaries." It grants them power "to Ordeyne make Enact and under their Seales to publish any Lawes whatsoever" and to appoint "any Judges or Justices Magistrates or Officers whatsoever." The stated purpose: "propagation of the Christian faith." The operative function: total administration of a captive territory by an appointed class, funded by the labor of the population within it.</p>
+
+<p>The charter's proprietors granted headrights and large tracts to the settler class that administered the territory on their behalf. That settler class became the planter aristocracy — the families who held the land, the enslaved labor, and the legislative seats through the colonial and antebellum periods. When South Carolina's 1868 constitution replaced the old judicial districts with counties, the families who held position in the districts transitioned into the county seats. The county seats became the school board chairs, the resident judges, the solicitors, the sheriffs, the council members. Circuit judges in South Carolina are not elected by the county population — they are elected by the General Assembly. Land granted in 1663 is governed by the same architecture in 2026. Titles changed. Oaths were reworded. But the arrangement did not change, because the arrangement is what writes the laws, staffs the courts, funds the elections, and educates the children who will occupy the next generation of the same positions.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 5: THE MIRROR                                        -->
+<!-- ============================================================ -->
+
+<h2>Every seat in the kingdom has a seat in the county</h2>
+
+<div class="mirror-grid">
+  <div class="mirror-col-left">
+    <h3>As it was</h3>
+    <div class="mirror-row">
+      <span class="mirror-role">Crown</span>
+      <span class="mirror-desc">Ultimate sovereignty. Grants authority downward. Receives revenue upward. Unreachable by the population.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Lord</span>
+      <span class="mirror-desc">Holds land by royal grant. Appoints every officer. Writes every law within the territory. Administers the court. Controls church patronage. Answers to the crown. Does not answer to the population.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Vassal</span>
+      <span class="mirror-desc">Holds position by oath to the lord. Administers territory. Enforces law. Collects revenue. Loyal to the man who granted the position — not to the population.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Serf</span>
+      <span class="mirror-desc">Holds nothing. Works. Produces. Receives subsistence. Cannot leave. Cannot challenge. Funds every layer above through labor and tithe.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Parish priest</span>
+      <span class="mirror-desc">Appointed by the lord. Administers sacraments, keeps records, collects tithe, preaches obedience as divine order. Spiritual life and material life are one system.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Lord's court</span>
+      <span class="mirror-desc">The lord adjudicates disputes among the people on his land. No appeal. The judge and the interested party are the same.</span>
+    </div>
+  </div>
+  <div class="mirror-col-right">
+    <h3>As it is</h3>
+    <div class="mirror-row">
+      <span class="mirror-role">State government</span>
+      <span class="mirror-desc">Charters the counties. Grants authority downward. Receives revenue upward. Functionally unreachable by the local population.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">County seat families</span>
+      <span class="mirror-desc">Hold institutional positions across generations — bench, solicitor, school board, county council. In a single judicial circuit, the resident judge, the solicitor, and the school board chair may share a surname or a household. Write local policy. Administer courts. Control appointments. Answer to the state. Do not answer to the population.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Deputies, clerks, administrators</span>
+      <span class="mirror-desc">Hold position by appointment within the network. Enforce policy. Collect revenue. Loyal to the officeholder who granted the position — not to the population.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Taxpayer</span>
+      <span class="mirror-desc">Holds no structural position. Works. Pays property tax, sales tax, fees, fines, assessments. Cannot exit. Cannot effectively challenge. Funds every layer above.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">Church</span>
+      <span class="mirror-desc">Same families who govern hold deacon seats, elder boards, property committees. The arrangement is blessed. To question the governance is to question the faith.</span>
+    </div>
+    <div class="mirror-row">
+      <span class="mirror-role">County court</span>
+      <span class="mirror-desc">The bench adjudicates disputes among the population it governs. Judicial circuit, solicitor, and public defender operate within the same network. The judge and the interested party share a surname, a church, or a supper table.</span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- SECTION 6: THE SCHOOL DISTRICT                               -->
+<!-- ============================================================ -->
+
+<h2>Whoever controls the school controls the next generation</h2>
+
+<p>The position the population least understands is the one that shapes every generation that follows.</p>
+
+<p>A school district is a taxing authority. It levies property taxes. It issues bonds. It holds eminent domain power. It controls procurement — millions in contracts for construction, technology, transportation, food service, legal counsel. It employs more people than most other county agencies combined. It controls the information environment in which every child in the county is formed for thirteen years.</p>
+
+<p>It decides what history is taught and what history is omitted. It decides which version of the county's past reaches the next generation. It administers the assessments that determine which children advance and which do not. It holds FERPA authority over your children's records — records you may request and the district may delay, deny, or condition. It reports to the state. It does not report to you.</p>
+
+<p>Under the feudal arrangement, the parish priest administered the sacraments, kept the records, and shaped the population's understanding of the world from birth to burial. The school district performs the identical function. It keeps the records. It shapes the understanding. It produces the next generation of the arrangement's participants — formed to operate within the structure, not to see it.</p>
+
+<p>A school board chair who sits unopposed in an uncontested election holds more direct authority over your family than any member of Congress you will ever vote for. A superintendent who administers a budget larger than most municipal governments answers to that board — not to you. How many people attend school board meetings in your county? How many have read the check register? How many have examined who receives the procurement contracts, who provides the legal counsel, and who those providers are connected to in the network that governs everything else?</p>
+
+<p>Parents send their children. Districts control the curriculum, decide what history is taught and what is omitted, administer the assessments, and hold the records. Thirteen years later, the arrangement returns a graduate who has never been shown the structure — only trained to function inside it.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 7: REGISTRATION AS SUBMISSION                        -->
+<!-- ============================================================ -->
+
+<h2>Every point of contact is a point of registration</h2>
+
+<p class="lead">There is no aspect of life that does not require the system. No moment from birth to death that is not registered, taxed, permitted, or conditioned. The following is the complete inventory.</p>
+
+<ul class="reg-list">
+  <li><span class="reg-event">You are born</span><span class="reg-req">Birth certificate — the state registers your existence</span></li>
+  <li><span class="reg-event">You are named</span><span class="reg-req">Social Security number — the federal government assigns your economic identity</span></li>
+  <li><span class="reg-event">You are educated</span><span class="reg-req">Compulsory attendance — the state holds custody of your formation for thirteen years</span></li>
+  <li><span class="reg-event">You drive</span><span class="reg-req">License — state permission to travel by the means available</span></li>
+  <li><span class="reg-event">You work</span><span class="reg-req">Withholding — the arrangement takes its portion before you receive yours</span></li>
+  <li><span class="reg-event">You marry</span><span class="reg-req">Marriage license — state permission to form a household</span></li>
+  <li><span class="reg-event">You buy land</span><span class="reg-req">Deed recording and property tax — you hold at the arrangement's pleasure, paying annually for the right to remain</span></li>
+  <li><span class="reg-event">You build on it</span><span class="reg-req">Permit — permission to improve what you hold</span></li>
+  <li><span class="reg-event">You hunt or fish</span><span class="reg-req">License — the crown's game is still the crown's game</span></li>
+  <li><span class="reg-event">You defend yourself</span><span class="reg-req">Permit — state permission to exercise what the founding document calls unalienable</span></li>
+  <li><span class="reg-event">You practice a trade</span><span class="reg-req">Occupational license — permission to earn by means of your own skill</span></li>
+  <li><span class="reg-event">You dispute the arrangement</span><span class="reg-req">Filing fees, procedural rules, jurisdictional requirements — the arrangement adjudicates complaints against itself</span></li>
+  <li><span class="reg-event">You die</span><span class="reg-req">Death certificate, probate — the arrangement administers your departure and distributes what you held at its pleasure</span></li>
+</ul>
+
+<p>The serf did not choose to work the lord's field. The field was the only field. The modern equivalent is not a field. It is every field. The arrangement does not force participation. It has made participation the condition of existence.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 8: THE ORPHANING                                     -->
+<!-- ============================================================ -->
+
+<h2>A population separated from its own history cannot see the structure it lives inside</h2>
+
+<p>The history the population receives is the history that survived the curriculum approval process — which means it is the history the governing class found acceptable. The founding mythology is layered over the operative reality. Brave settlers over land seizure. Freedom from tyranny over the reorganization of tyranny under new titles. Democratic self-governance over continuous extraction by a self-perpetuating network.</p>
+
+<p>Records were burned. Courthouse fires destroyed deed books. Enslaved peoples' histories were erased by law — it was illegal to teach literacy, which meant it was illegal to create a counter-record. Indigenous oral histories were dismissed and excluded from the institutional archive. The population that exists today inherited a partial, curated, institutionally-produced version of where it came from. It has no way to know what is missing, because the mechanism that removed the history also removed the evidence that anything was removed.</p>
+
+<p>So when people look at the national government, they see failure — but when they look at the county government, they see neighbors. Someone from church chairs the school board. Someone whose family has always held that seat sits on the bench. A coach from the youth league wears the sheriff's badge. A fundraiser organizer sits on the council. Nobody sees a network. They see individuals. And they cannot see the network because it is the entire environment — school, court, church, council, hospital, real estate office, law firm, lodge. Seeing it would require a frame of reference outside it. Courthouse fires, anti-literacy statutes, curriculum approval processes, and institutional control of the archive have produced a population with no such frame. What was removed, and the evidence that anything was removed, are gone together.</p>
+
+<!-- ============================================================ -->
+<!-- SECTION 9: CLOSING                                           -->
+<!-- ============================================================ -->
+
+<h2>Samuel's warning is a current conditions report</h2>
+
+<p>He will take your sons. Your sons are in the uniforms — military, law enforcement, corrections — serving the apparatus, loyal to the chain of command, administered by the network.</p>
+
+<p>He will take your fields, the best of them, and give them to his servants. Land is administered by the zoning board, taxed by the county, appraised by the assessor, liened by the code enforcement officer — all positions held within the network. Best contracts, best appointments, best access — all flow to those who serve the arrangement. Procurement awards go to the connected firms. Legal counsel goes to the network attorneys. Bond issues are managed by the network's financial advisors.</p>
+
+<p>He will take the tenth of your seed and give it to his officers. Property tax, sales tax, fees, fines, assessments, bond payments, millage — all flow upward. People fund the arrangement through their labor and through the portion the arrangement takes before the laborer receives the rest.</p>
+
+<p>Ye shall be his servants. Not some of you. All of you. The population that had no voice in the elders' decision at Ramah — that is the population that works, pays, sends its children to the school the arrangement administers, appears in the court the arrangement staffs, worships in the church the arrangement blesses, and votes in the election the arrangement frames.</p>
+
+<p>Three thousand years. Language changed. Actions did not. Tithe became tax. Confession became credit report. Penance became interest rate. Parish priest became superintendent. Lord's court became county court. An oath to the lord became loyalty to the officeholder. A charter became a constitution. Divine right became democratic mandate.</p>
+
+<p>And every Sunday morning, the institution that holds the text of Samuel's warning reads it to the population as a lesson about the people's disobedience — rather than as a description of what the administrative class chose, what it cost, and who is still paying.</p>
+
+<div class="sig">
+IAMINMYFATHERASHEINME<br>
+Glory to Elohim YHWH<br>
+Via Lucis Christi<br>
+Ezekiel 34:10
+</div>
+
+</div>
+</body>
+</html>
